@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('common/css') %>
+    <link rel="stylesheet" href="/assets/css/main.css">
+  </head>
+  <body>
+    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="login.html"></ons-navigator>
+    <template id="login.html">
+      <ons-page id="login-page">
+        <ons-toolbar>
+          <div class="left">
+            <ons-toolbar-button icon="md-face"></ons-toolbar-button>
+            FaNSights
+          </div>
+        </ons-toolbar>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <p>
+            <ons-input id="lp_username" modifier="underbar" placeholder="Username" float></ons-input>
+          </p>
+          <p>
+            <ons-input id="lp_password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+          </p>
+          <p style="margin-top: 30px;">
+            <ons-button onclick="lp_login()">Sign in</ons-button>
+            <ons-button onclick="lp_signup()">Sign up</ons-button>
+          </p>
+        </div>
+      </ons-page>
+    </template>
+
+    <script>
+    const lp_login = function() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (username === 'bob' && password === 'secret') {
+        ons.notification.alert('Congratulations!');
+      } else {
+        ons.notification.alert('Incorrect username or password.');
+      }
+    };
+
+    const lp_signup = function() {
+      window.location.href=" /signup";
+    }
+
+    /** const lp_signup = function() {
+      const nav = document.getElementById('appNavigator');
+      nav.pushPage('signup.html');
+    } */
+    </script>
+
+        <%- include('common/js') %>
+        <script src="/assets/js/app.js"></script>
+    </body>
+</html>
