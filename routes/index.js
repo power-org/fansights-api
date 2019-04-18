@@ -12,7 +12,7 @@ router.get('/login', mw.hasSession, (req, res)=>{
     res.render('login');
 });
 
-router.post('/post', mw.isAuthAPI, (req, res)=>{
+router.post('/post', mw.isAuthAPI, (reqgigit, res)=>{
     login.siginIn(req.body).then(data=>{
         req.session.user = data;
         res.status(200).json({
