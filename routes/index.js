@@ -7,7 +7,7 @@ router.get('/', mw.isAuth, (req, res)=>{
 });
 
 router.get('/login', mw.hasSession, (req, res)=>{
-    res.send('login');
+    res.render('login');
 });
 
 router.get('/logout', (req, res)=>{
@@ -16,7 +16,7 @@ router.get('/logout', (req, res)=>{
 });
 
 router.get('/signup', mw.hasSession, (req, res)=>{
-    res.send('signup');
+    res.render('signup');
 });
 
 module.exports = router;

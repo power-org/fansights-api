@@ -8,7 +8,28 @@
         <link rel="stylesheet" href="/assets/css/main.css">
     </head>
     <body>
-        <h1>Hello World</h1>
+        
+        <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="login.html"></ons-navigator>
+        <ons-page id="main-page">
+            <ons-toolbar>
+                <div class="center"></div>
+                <div class="right">
+                <ons-toolbar-button>
+                    <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+                </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+
+            <p style="text-align: center">
+                <ons-button>Click me!</ons-button>
+            </p>
+
+            <script>
+                ons.getScriptPage().onInit = function() {
+                console.log('This is a lifecycle hook!', this);
+                };
+            </script>
+        </ons-page>
 
         <%- include('common/js') %>
         <script src="/assets/js/app.js"></script>
