@@ -12,11 +12,16 @@ const app = express();
 //middleware to process POST data
 const bodyParser = require('body-parser');
 
-//sample routes
+//routes
 const routes = require('./routes');
 
 //import settings
-const settings = require('./lib');
+const { Database } = require('./lib');
+
+const helmet = require('helmet')
+app.use(helmet())
+
+Database.connect();
 
 //set the template engine into ejs
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //declare session middleware
 app.use(session({
-    secret: 'this.is.super.secret.key', //make this unique and keep it somewhere safe
+    secret: process.env.SESSION_SECRET || 'this.is.super.secret.key', //make this unique and keep it somewhere safe
     saveUninitialized: false,
     resave: false
 }));
