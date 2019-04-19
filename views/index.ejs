@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title></title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <%- include('common/css') %>
-        <link rel="stylesheet" href="/assets/css/main.css">
-    </head>
-    <body>
-        
-        <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="main.html"></ons-navigator>
-        <template id="main.html">
-            <ons-page id="main-page">
 
-                <ons-tabbar swipeable position="auto">
-                    <ons-tab page="home-tab.html" icon="ion-home, material:md-home" badge="7" active>
-                    </ons-tab>
-                    <ons-tab page="camera-tab.html" icon="md-camera" active-icon="md-camera">
-                    </ons-tab>
-                    <ons-tab page="profile-tab.html" icon="md-settings" active-icon="md-settings">
-                    </ons-tab>
-                </ons-tabbar>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include('common/css') %>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
 
-                <script>
-                    ons.getScriptPage().onInit = function() {
+<body>
+
+    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="main.html"></ons-navigator>
+    <template id="main.html">
+        <ons-page id="main-page">
+
+            <ons-tabbar swipeable position="auto">
+                <ons-tab page="home-tab.html" icon="ion-home, material:md-home" badge="7" active>
+                </ons-tab>
+                <ons-tab page="camera-tab.html" icon="md-camera" active-icon="md-camera">
+                </ons-tab>
+                <ons-tab page="profile-tab.html" icon="md-settings" active-icon="md-settings">
+                </ons-tab>
+            </ons-tabbar>
+
+            <script>
+                ons.getScriptPage().onInit = function () {
                     console.log('This is a lifecycle hook!', this);
-                    };
-                </script>
-            </ons-page>
-        </template>
+                };
+            </script>
+        </ons-page>
+    </template>
 
-        <template id="home-tab.html">
-            <ons-page id="home-page">
-                <ons-toolbar>
-                    <div class="left">FaNSights</div>
-                </ons-toolbar>
-                
-                <ons-list id="food-list">
-                    <ons-list-header>My Foods</ons-list-header>
-                </ons-list>
+    <template id="home-tab.html">
+        <ons-page id="home-page">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button><img src="/assets/img/FanSights_minimal-white.svg"></ons-toolbar-button>
+                    FaNSights
+                </div>
+            </ons-toolbar>
 
-                <script>
-                    ons.getScriptPage().onInit = function() {
-                        console.log('This is a lifecycle hook from home page!', this);
-                    };
+            <ons-list id="food-list">
+                <ons-list-header>My Foods</ons-list-header>
+            </ons-list>
 
-                    const foods = [
-                        {
-                            id: 1,
-                            name: 'Bacon',
-                            description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-                            img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-                        },
-                        {
-                            id: 2,
-                            name: 'Hotdog',
-                            description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-                            img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-                        }
-                    ];
+            <script>
+                ons.getScriptPage().onInit = function () {
+                    console.log('This is a lifecycle hook from home page!', this);
+                };
 
-                    const list = document.getElementById('food-list');
-                    const items = foods.map(food => `
-                        <ons-list-item tappable modifier="chevron" onclick="handleItemClick(${food.id})">
+                const foods = [
+                    {
+                        id: 1,
+                        name: 'Bacon',
+                        description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
+                        img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
+                    },
+                    {
+                        id: 2,
+                        name: 'Hotdog',
+                        description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
+                        img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
+                    }
+                ];
+
+                const list = document.getElementById('food-list');
+                const items = foods.map(food => `
+                        <ons-list-item onclick="handleItemClick(${food.id})">
                         <div class="left">
                             <img class="list-item__thumbnail" src="${food.img}">
                         </div>
@@ -71,31 +76,33 @@
                         </div>
                         </ons-list-item>
                     `);
-                    items.forEach(item => {
-                        list.insertAdjacentHTML('beforeend', item);
-                    });
-                    
-                    const handleItemClick = function(foodId) {
-                        const selectedFood = foods.find(food => food.id === foodId);
-                        const nav = document.getElementById('appNavigator');
-                        nav.pushPage('food-info.html', { data: selectedFood });
-                    };
-                </script>
+                items.forEach(item => {
+                    list.insertAdjacentHTML('beforeend', item);
+                });
 
-            </ons-page>
-        </template>
+                const handleItemClick = function (foodId) {
+                    const selectedFood = foods.find(food => food.id === foodId);
+                    const nav = document.getElementById('appNavigator');
+                    nav.pushPage('food-info.html', { data: selectedFood });
+                };
+            </script>
 
-        <template id="food-info.html">
-            <ons-page id="food-info">
-                <ons-toolbar>
-                <div class="left"><ons-back-button>My Foods</ons-back-button></div>
+        </ons-page>
+    </template>
+
+    <template id="food-info.html">
+        <ons-page id="food-info">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button>My Foods</ons-back-button>
+                </div>
                 <div class="center"></div>
-                </ons-toolbar>
+            </ons-toolbar>
 
-                <p></p>
+            <p></p>
 
-                <%# <ons-list>
-                    <ons-list-item modifier="chevron>
+            <%# <ons-list>
+                    <ons-list-item modifier="chevron">
                         <div class="left">
                             <img class="list-item__thumbnail" src="https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg">
                         </div>
@@ -105,43 +112,44 @@
                     </ons-list-item>
                 </ons-list>  %>
 
-                <script>
-                    console.log(document.getElementById('appNavigator'));
-                </script>
-            </ons-page>
-        </template>
+            <script>
+                console.log(document.getElementById('appNavigator'));
+            </script>
+        </ons-page>
+    </template>
 
-        <template id="camera-tab.html">
-            <ons-page id="camera-page">
-                <ons-toolbar>
-                    <div class="left">Camera</div>
-                </ons-toolbar>
-            </ons-page>
-        </template>
+    <template id="camera-tab.html">
+        <ons-page id="camera-page">
+            <ons-toolbar>
+                <div class="left">Camera</div>
+            </ons-toolbar>
+        </ons-page>
+    </template>
 
-        <template id="profile-tab.html">
-            <ons-page id="profile-page">
-                <ons-toolbar>
-                    <div class="left">Profile</div>
-                </ons-toolbar>
-            </ons-page>
-        </template>
+    <template id="profile-tab.html">
+        <ons-page id="profile-page">
+            <ons-toolbar>
+                <div class="left">Profile</div>
+            </ons-toolbar>
+        </ons-page>
+    </template>
 
-        <%- include('common/js') %>
-        <script src="/assets/js/app.js"></script>
+    <%- include('common/js') %>
+    <script src="/assets/js/app.js"></script>
 
-        <script>
-            /**
-            *   Page Event Change Listener
-            */
-            document.addEventListener('init', function(event) {
+    <script>
+        /**
+        *   Page Event Change Listener
+        */
+        document.addEventListener('init', function (event) {
             const page = event.target;
-                if (page.id === 'food-info') {
-                    console.log(page.data);
-                    page.querySelector('ons-toolbar .center').innerHTML = page.data.name;
-                    page.querySelector('p').innerHTML = page.data.description;
-                }
-            });
-        </script>
-    </body>
+            if (page.id === 'food-info') {
+                console.log(page.data);
+                page.querySelector('ons-toolbar .center').innerHTML = page.data.name;
+                page.querySelector('p').innerHTML = page.data.description;
+            }
+        });
+    </script>
+</body>
+
 </html>
