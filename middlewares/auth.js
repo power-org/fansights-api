@@ -24,6 +24,19 @@ module.exports.isAuthAPI = (req, res, next) => {
   }
 };
 
+module.exports.isAfterAuthAPI = (req, res, next) => {
+  const ACTION = `[isAuthenticated]`;
+  // Get user token
+  console.log("info", `[AUTH]${ACTION} - user session`, req.session);
+  if(req.session.user){
+    res.status(400).json({
+      message: 'Already logged in.'
+    });
+  }else{
+    next();
+  }
+};
+
 module.exports.hasSession = (req, res, next) => {
   const ACTION = `[hasSession]`;
   // Get user token
