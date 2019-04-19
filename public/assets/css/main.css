@@ -1,2 +1,68 @@
-h1 {
-  background: black; }
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700");
+* {
+  font-family: 'Ubuntu', sans-serif !important;
+  font-size: 12px; }
+
+.logo {
+  height: 50%; }
+  .logo img {
+    height: 98px; }
+
+.max-height {
+  height: 100vh; }
+
+.max-height-toolbar {
+  height: calc(100vh - 44px); }
+
+.flex {
+  display: flex; }
+  .flex__wrap {
+    flex-wrap: wrap; }
+  .flex__center {
+    justify-content: center;
+    align-items: center; }
+  .flex__center-horizontal {
+    justify-content: center; }
+  .flex__center-vertical {
+    align-items: center; }
+  .flex__row {
+    flex-direction: row; }
+  .flex__column {
+    flex-direction: column; }
+  .flex__space-around {
+    justify-content: space-around; }
+  .flex__space-between {
+    justify-content: space-between; }
+
+.input-container {
+  margin: 0 40px; }
+  .input-container ons-input {
+    margin: 10px 0;
+    width: 100%; }
+  .input-container input {
+    border: none;
+    background: #484848;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    border: solid 1px #484848;
+    transition: 100ms ease-in-out;
+    height: 35px;
+    padding: 0;
+    padding: 0 10px; }
+    .input-container input::placeholder {
+      font-size: 12px; }
+
+.btn {
+  margin: 0 40px 40px 40px; }
+  .btn ons-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    border-radius: 20px;
+    height: 35px;
+    padding: 0;
+    font-size: 12px; }
+  .btn .alt {
+    background-color: #FF5A5F; }

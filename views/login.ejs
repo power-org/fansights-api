@@ -1,65 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%- include('common/css') %>
-    <link rel="stylesheet" href="/assets/css/main.css">
-  </head>
-  <body>
-    <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="login.html"></ons-navigator>
-    <template id="login.html">
-      <ons-page id="login-page">
-        <ons-toolbar>
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%- include('common/css') %>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+  <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="login.html"></ons-navigator>
+  <template id="login.html">
+    <ons-page id="login-page">
+      <!-- <ons-toolbar>
           <div class="left">
             <ons-toolbar-button icon="md-face"></ons-toolbar-button>
             FaNSights App
           </div>
-        </ons-toolbar>
+        </ons-toolbar> -->
 
-        <div style="text-align: center; margin-top: 30px;">
-          <p>
-            <ons-input id="email" modifier="underbar" placeholder="Email" float></ons-input>
-          </p>
-          <p>
-            <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
-          </p>
-          <p style="margin-top: 30px;">
-            <ons-button onclick="lp_login()">Sign in</ons-button>
-            <ons-button onclick="lp_signup()">Sign up</ons-button>
-          </p>
+      <div class="max-height flex flex__column flex__space-between">
+        <div class="logo flex flex__center">
+          <img src="/assets/img/FanSights.svg" />
         </div>
-      </ons-page>
-    </template>
+        <div>
+          <div class="input-container">
+            <label>Email</label>
+            <ons-input id="email" modifier="underbar" placeholder="May i know who you are?" float></ons-input>
+            <label>Password</label>
+            <ons-input id="password" modifier="underbar" type="password" placeholder="Don't worry, it'll be our secret"
+              float></ons-input>
+          </div>
+          <div class="btn">
+            <ons-button modifier="large" onclick="lp_login()">Sign in</ons-button>
+            <ons-button class="alt" modifier="large" onclick="lp_signup()">Sign up</ons-button>
+          </div>
+        </div>
+      </div>
+    </ons-page>
+  </template>
 
-    <%- include('common/js') %>
-    <script src="/assets/js/app.js"></script>
-    <script>
-        //axios.get('https://jsonplaceholder.typicode.com/posts')
-        //    .then((data) => console.log(data));
-      
-      const lp_login = function() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        axios.post('/login', { email, password })
-          .then(result => {
-            window.location.href = "/";
-          })
-          .catch(err => {
-            ons.notification.alert('Incorrect username or password.');  
-          });
-      };
+  <%- include('common/js') %>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    //axios.get('https://jsonplaceholder.typicode.com/posts')
+    //    .then((data) => console.log(data));
 
-      const lp_signup = function() {
-        window.location.href=" /signup";
-      }
+    const lp_login = function () {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      axios.post('/login', { email, password })
+        .then(result => {
+          window.location.href = "/";
+        })
+        .catch(err => {
+          ons.notification.alert('Incorrect username or password.');
+        });
+    };
+
+    const lp_signup = function () {
+      window.location.href = " /signup";
+    }
 
       /** const lp_signup = function() {
         const nav = document.getElementById('appNavigator');
         nav.pushPage('signup.html');
       } */
-      </script>
-    </body>
+  </script>
+</body>
+
 </html>
