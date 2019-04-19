@@ -5,7 +5,7 @@ let signup = {
         return new Promise((resolve, reject) => {
             let content = {
                 name: payload.name,
-                password: Database.mysql.raw(`PASSWORD('${payload.password}')`),
+                password: Database.mysql.raw(`MD5('${payload.password}')`),
                 email: payload.email
             };
             Database.execute('INSERT INTO members SET ?', content).then(data=>{
