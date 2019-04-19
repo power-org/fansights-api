@@ -37,26 +37,29 @@
       </ons-page>
     </template>
 
+
+    <%- include('common/js') %>
+    <script src="/assets/js/app.js"></script>
     <script>
-    const su_signup = function() {
-      const su_form = {
-        fullname: document.getElementById('su_fullname').value,
-        email: document.getElementById('su_email').value,
-        password: document.getElementById('su_password').value,
-      };
-      ons.notification.alert('Congratulations!');
-
-      /** if (username === 'bob' && password === 'secret') {
-        ons.notification.alert('Congratulations!');
-      } else {
-        ons.notification.alert('Incorrect username or password.');
-      }*/
-    }; 
-    </script>
-
-
-
-        <%- include('common/js') %>
-        <script src="/assets/js/app.js"></script>
+      const signup = function() {
+        
+        const su_form = {
+          name: document.getElementById('su_fullname').value,
+          email: document.getElementById('su_email').value,
+          password: document.getElementById('su_password').value,
+        };
+        
+        axios.post('/signup', su_form)
+          .then(result => {
+            ons.notification.alert('Account created!')
+              .then(() => {
+                window.location.href = "/";
+              });
+          })
+          .catch(err => {
+            ons.notification.alert('Error signing up.');  
+          });
+      }; 
+      </script>
     </body>
 </html>
