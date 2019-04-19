@@ -103,7 +103,7 @@
                             <span class="list-item__title">sample</span><span class="list-item__subtitle">sample</span>
                         </div>
                     </ons-list-item>
-                </ons-list> %>
+                </ons-list>  %>
 
                 <script>
                     console.log(document.getElementById('appNavigator'));
@@ -131,6 +131,9 @@
         <script src="/assets/js/app.js"></script>
 
         <script>
+            /**
+            *   Page Event Change Listener
+            */
             document.addEventListener('init', function(event) {
             const page = event.target;
                 if (page.id === 'food-info') {
