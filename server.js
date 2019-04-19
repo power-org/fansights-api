@@ -1,3 +1,5 @@
+require('./globals')
+
 require('dotenv').config({silent: true})
 
 /**
