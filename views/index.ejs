@@ -35,9 +35,11 @@
                 <ons-toolbar>
                     <div class="left">FaNSights</div>
                 </ons-toolbar>
+
+                <canvas id="myChart" style="margin-bottom: 10px;"></canvas>
                 
                 <ons-list id="food-list">
-                    <ons-list-header>My Foods</ons-list-header>
+                    <ons-list-header style="margin-top: 10px;">My Foods</ons-list-header>
                 </ons-list>
 
                 <script>
@@ -45,7 +47,58 @@
                         console.log('This is a lifecycle hook from home page!', this);
                     };
 
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const chart = new Chart(ctx, {
+                        // The type of chart we want to create
+                        type: 'pie',
+
+                        // The data for our dataset
+                        data: {
+                            labels: ['Bacon', 'Hotdog', 'Siomai'],
+                            datasets: [{
+                                label: 'My Foods',
+                                backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 99, 66)', 'rgb(255, 99, 198)'],
+                                borderColor: ['rgb(255, 99, 132)', 'rgb(255, 99, 66)', 'rgb(255, 99, 198)'],
+                                data: [3, 10, 5]
+                            }]
+                        },
+
+                        options: {
+                            legend: {
+                                labels: {
+                                    fontColor: 'white',
+                                    padding: 35
+                                },
+                                position: 'right',
+                            }
+                        }
+                    });
+
                     const foods = [
+                        {
+                            id: 1,
+                            name: 'Bacon',
+                            description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
+                            img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
+                        },
+                        {
+                            id: 2,
+                            name: 'Hotdog',
+                            description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
+                            img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
+                        },
+                        {
+                            id: 1,
+                            name: 'Bacon',
+                            description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
+                            img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
+                        },
+                        {
+                            id: 2,
+                            name: 'Hotdog',
+                            description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
+                            img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
+                        },
                         {
                             id: 1,
                             name: 'Bacon',
@@ -92,18 +145,17 @@
                 <div class="center"></div>
                 </ons-toolbar>
 
-                <p></p>
-
-                <%# <ons-list>
-                    <ons-list-item modifier="chevron>
-                        <div class="left">
-                            <img class="list-item__thumbnail" src="https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg">
-                        </div>
+                <ons-list style="margin-top: 30px; background: transparent">
+                    <ons-list-item modifier="chevron">
+                       <div class="left">
+                            <img id="fi-img" class="list-item__thumbnail" src="https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg">
+                        </div> 
                         <div class="center">
-                            <span class="list-item__title">sample</span><span class="list-item__subtitle">sample</span>
+                            <span id="fi-title" class="list-item__title"></span>
+                            <span id="fi-subtitle" class="list-item__subtitle"></span>
                         </div>
                     </ons-list-item>
-                </ons-list>  %>
+                </ons-list>
 
                 <script>
                     console.log(document.getElementById('appNavigator'));
@@ -129,19 +181,5 @@
 
         <%- include('common/js') %>
         <script src="/assets/js/app.js"></script>
-
-        <script>
-            /**
-            *   Page Event Change Listener
-            */
-            document.addEventListener('init', function(event) {
-            const page = event.target;
-                if (page.id === 'food-info') {
-                    console.log(page.data);
-                    page.querySelector('ons-toolbar .center').innerHTML = page.data.name;
-                    page.querySelector('p').innerHTML = page.data.description;
-                }
-            });
-        </script>
     </body>
 </html>
