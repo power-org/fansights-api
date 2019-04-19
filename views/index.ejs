@@ -9,27 +9,29 @@
     </head>
     <body>
         
-        <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="login.html"></ons-navigator>
-        <ons-page id="main-page">
-            <ons-toolbar>
-                <div class="center"></div>
-                <div class="right">
-                <ons-toolbar-button>
-                    <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
-                </ons-toolbar-button>
-                </div>
-            </ons-toolbar>
+        <ons-navigator id="appNavigator" swipeable swipe-target-width="80px" page="main.html"></ons-navigator>
+        <template id="main.html">
+            <ons-page id="main-page">
+                <ons-toolbar>
+                    <div class="center">FaNSights</div>
+                    <div class="right">
+                    <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                    </div>
+                </ons-toolbar>
 
-            <p style="text-align: center">
-                <ons-button>Click me!</ons-button>
-            </p>
+                <p style="text-align: center">
+                    <ons-button>Click me!</ons-button>
+                </p>
 
-            <script>
-                ons.getScriptPage().onInit = function() {
-                console.log('This is a lifecycle hook!', this);
-                };
-            </script>
-        </ons-page>
+                <script>
+                    ons.getScriptPage().onInit = function() {
+                    console.log('This is a lifecycle hook!', this);
+                    };
+                </script>
+            </ons-page>
+        </template>
 
         <%- include('common/js') %>
         <script src="/assets/js/app.js"></script>

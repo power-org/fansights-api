@@ -14,16 +14,16 @@
         <ons-toolbar>
           <div class="left">
             <ons-toolbar-button icon="md-face"></ons-toolbar-button>
-            FaNSights
+            FaNSights App
           </div>
         </ons-toolbar>
 
         <div style="text-align: center; margin-top: 30px;">
           <p>
-            <ons-input id="lp_username" modifier="underbar" placeholder="Username" float></ons-input>
+            <ons-input id="email" modifier="underbar" placeholder="Email" float></ons-input>
           </p>
           <p>
-            <ons-input id="lp_password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+            <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
           </p>
           <p style="margin-top: 30px;">
             <ons-button onclick="lp_login()">Sign in</ons-button>
@@ -33,29 +33,33 @@
       </ons-page>
     </template>
 
+    <%- include('common/js') %>
+    <script src="/assets/js/app.js"></script>
     <script>
-    const lp_login = function() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+        //axios.get('https://jsonplaceholder.typicode.com/posts')
+        //    .then((data) => console.log(data));
+      
+      const lp_login = function() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        axios.post('/login', { email, password })
+          .then(result => {
+            window.location.href = "/";
+          })
+          .catch(err => {
+            ons.notification.alert('Incorrect username or password.');  
+          });
+      };
 
-      if (username === 'bob' && password === 'secret') {
-        ons.notification.alert('Congratulations!');
-      } else {
-        ons.notification.alert('Incorrect username or password.');
+      const lp_signup = function() {
+        window.location.href=" /signup";
       }
-    };
 
-    const lp_signup = function() {
-      window.location.href=" /signup";
-    }
-
-    /** const lp_signup = function() {
-      const nav = document.getElementById('appNavigator');
-      nav.pushPage('signup.html');
-    } */
-    </script>
-
-        <%- include('common/js') %>
-        <script src="/assets/js/app.js"></script>
+      /** const lp_signup = function() {
+        const nav = document.getElementById('appNavigator');
+        nav.pushPage('signup.html');
+      } */
+      </script>
     </body>
 </html>

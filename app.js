@@ -34,6 +34,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 // serve the files out of ./public as our main files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets/js/axios', express.static(path.join(__dirname, 'node_modules/axios/dist/axios.min.js')));
+
 
 //declare session middleware
 app.use(session({
