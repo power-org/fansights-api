@@ -4,7 +4,8 @@ const router = express.Router()
 router.post('/webhook', (req, res)=>{
   let sender = req.body.sender;
   let branch = req.body.ref;
-  deploy(res);
+  if(['ping','push'].indexOf(req.headers['X-GitHub-Event']) > -1) deploy(res);
+  else return res.send(500);
 });
 
 function deploy(res) {
