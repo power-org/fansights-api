@@ -20,6 +20,33 @@ body {
 .max-height-toolbar {
   height: calc(100vh - 44px); }
 
+.badge {
+  background-color: #bdbdbd;
+  height: 25px;
+  width: 25px;
+  font-size: 12px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  position: relative; }
+  .badge.red {
+    background: #FF5A5F; }
+  .badge.blue {
+    background: #4B88E4; }
+  .badge.orange {
+    background: #FFB554; }
+  .badge i {
+    position: absolute;
+    top: 0;
+    transform: translateY(-150%);
+    background-color: #767676;
+    padding: 3px 5px;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: normal; }
+
 .flex {
   display: flex; }
   .flex__wrap {

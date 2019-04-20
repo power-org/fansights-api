@@ -26,6 +26,41 @@ body{
 .max-height-toolbar{
   height: calc(100vh - 44px);
 }
+.badge{
+  background-color: #bdbdbd;
+  height: 25px;
+  width: 25px;
+  font-size: 12px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  position: relative;
+  &.red{
+    background:#FF5A5F; 
+  }
+  &.blue{
+    background:#4B88E4; 
+  }
+  &.orange{
+    background:#FFB554; 
+  }
+  i{
+    position: absolute;
+    top: 0;
+    transform: translateY(-150%);
+    background-color: #767676;
+    padding: 3px 5px;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: normal;
+    // opacity: 0;
+  }
+  // &:focus i{
+  //   opacity: 1;
+  // }
+}
 .flex{
   display: flex;
   &__wrap{
