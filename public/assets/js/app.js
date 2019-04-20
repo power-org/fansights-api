@@ -142,12 +142,22 @@ const loadHomeInfo = async function() {
     ];
 
     /**
+     *   Push to another page on item click
+     */
+    const handleItemClick = function(foodId) {
+      const selectedFood = foods.find(food => food.id === foodId);
+      const nav = document.getElementById('appNavigator');
+      nav.pushPage('food-info.html', { data: selectedFood });
+    };
+
+    /**
      *   List all foods from server reponse
      */
     const list = document.getElementById('food-list');
 
     const items = foods.map(food => {
       const onsListItem = document.createElement('ons-list-item');
+      onsListItem.addEventListener('click', () =>  handleItemClick(food.id));
       onsListItem.innerHTML = `
         <div class="left">
             <img class="list-item__thumbnail" src="${food.img}">
@@ -164,19 +174,10 @@ const loadHomeInfo = async function() {
     items.forEach(item => {
       list.appendChild(item);
     });
-
-    /**
-     *   Push to another page on item click
-     */
-    const handleItemClick = function(foodId) {
-      const selectedFood = foods.find(food => food.id === foodId);
-      const nav = document.getElementById('appNavigator');
-      nav.pushPage('food-info.html', { data: selectedFood });
-    };
-    hideLoading('loading-modal');
   } catch (error) {
     console.log('Request Error', error);
   }
+  hideLoading('loading-modal');
 };
 
 /**
