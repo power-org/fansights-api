@@ -26,9 +26,6 @@ mw.isAuth, (req, res)=>{
 
 router.use('/api/upload', require('./upload'));
 router.use('/api/github', require('./github-webook'));
-router.get('/testing', (req,res)=>{
-  res.send('HELLO TEST');
-});
 
 router.get('/login', mw.hasSession, (req, res)=>{
     res.render('login');
