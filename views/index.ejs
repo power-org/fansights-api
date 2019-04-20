@@ -37,8 +37,17 @@
                 <ons-toolbar>
                     <div class="left">FaNSights</div>
                 </ons-toolbar>
-
-                <canvas id="myChart" style="margin-bottom: 10px;"></canvas>
+                <div class="chart">
+                    <div class="chart__header">
+                        <p class="title">
+                            Daily diet
+                        </p>
+                        <p class="sub-title">
+                            Top foods you eat
+                        </p>
+                    </div>
+                    <canvas id="myChart" style="transform: translateX(-30px); margin-top:100px" height="150px"></canvas>
+                </div>
                 
                 <ons-list id="food-list">
                     <ons-list-header style="margin-top: 10px;">My Foods</ons-list-header>
@@ -69,13 +78,15 @@
                             legend: {
                                 labels: {
                                     fontColor: 'white',
-                                    padding: 35
+                                    // padding: 35
+                                    boxWidth:30,
+                                    position:'absolute'
                                 },
                                 position: 'right',
                             }
                         }
                     });
-
+                    console.log("halooo",chart);
                     const foods = [
                         {
                             id: 1,
@@ -117,7 +128,7 @@
 
                     const list = document.getElementById('food-list');
                     const items = foods.map(food => `
-                        <ons-list-item tappable modifier="chevron" onclick="handleItemClick(${food.id})">
+                        <ons-list-item tappable onclick="handleItemClick(${food.id})">
                         <div class="left">
                             <img class="list-item__thumbnail" src="${food.img}">
                         </div>
