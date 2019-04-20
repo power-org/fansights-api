@@ -16,7 +16,8 @@ document.addEventListener('init', function(event) {
     page.querySelector('#fi-img').src = img;
     page.querySelector('#fi-title').innerHTML = name;
     page.querySelector('#fi-subtitle').innerHTML = description;
-  } else if (page.id === 'home-page') {
+  } else if (page.id === 'post-food-page') {
+    console.log(page.data);
   }
 });
 
@@ -188,6 +189,10 @@ const submitPhoto = function(photo) {
   const formData = new FormData();
   formData.append('photo', photo);
   console.log('FORM DATA', formData.get('photo'));
+  // const nav = document.getElementById('appNavigator');
+  // nav.pushPage('food-post.html', { data: photo });
+
+
   // axios
   //   .post('/url', formData)
   //   .then(result => {})
