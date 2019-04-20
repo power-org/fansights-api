@@ -27,31 +27,140 @@ document.addEventListener('init', function(event) {
 
 document.addEventListener('prechange', function(event) {
   if (event.activeIndex === 1) {
-    // const player = document.getElementById('player');
-    // const constraints = {
-    //   video: true
-    // };
-    // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-    //   player.srcObject = stream;
-    // })
-    // .catch((err) => {
-    //   const camContainer = document.getElementById('camera-container');
-    //   camContainer.insertAdjacentHTML('beforeend', '<input type="file" accept="image/*">');
-    //   console.log(camContainer);
-    //   console.log({err});
-    // })
+    document.getElementById('ct-browse-file').click();
+
+    /**
+     *   Listen to local file browsing
+     */
+    const browseFiles = document.getElementById('ct-browse-file');
+    browseFiles.addEventListener('change', e => {
+      const selectedImg = e.target.files[0];
+      const input = e.target;
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          document
+            .querySelector('#photo-viewer')
+            .setAttribute('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+
+      submitPhoto(selectedImg);
+    });
+
+    browseFiles.onclick = function() {
+      document.body.onfocus = checkFile();
+    };
+
+    const checkFile = function() {
+      if (!browseFiles.value.length) {
+        const tabBar = document.querySelector('ons-tabbar');
+        console.log('TABBAR', ons);
+        // TODO: Return to tab
+        //tabBar.setActive(0);
+      }
+      document.body.onfocus = null;
+    };
+
+    const tags = [
+      [
+        {
+          id: 1,
+          name: 'cheese',
+          long_desc: 'This is a cheese 1'
+        },
+        {
+          id: 2,
+          name: 'cheese',
+          long_desc: 'This is a cheese 2'
+        }
+      ],
+      [
+        {
+          id: 3,
+          name: 'bun',
+          long_desc: 'This is a bun 1'
+        },
+        {
+          id: 4,
+          name: 'bun',
+          long_desc: 'This is a bun 2'
+        }
+      ],
+      [
+        {
+          id: 5,
+          name: 'lettuce',
+          long_desc: 'This is a lettuce 1'
+        },
+        {
+          id: 6,
+          name: 'lettuce',
+          long_desc: 'This is a lettuce 2'
+        }
+      ]
+    ];
+
+    // const onsSelect = document.createElement('ons-select');
+    // onsSelect.setAttribute('id', 1);
+    const os = document.querySelector('ons-select');
+    console.log('os', os);
+    if (document.contains(os)) {
+      os.remove();
+      // document.querySelectorAll('.someselector').forEach(el => el.remove());
+    } else {
+      tags.forEach((groups, index) => {
+        console.log('GROUPS', groups);
+        let onsSelect = document.createElement('ons-select');
+        onsSelect.setAttribute('id', `tag-list-item-${index + 1}`);
+  
+        let onsSelectListItem = '';
+        groups.forEach(tag => {
+          onsSelectListItem += `<option value="${tag.id}">${tag.name} - ${tag.long_desc}</option>`;
+          onsSelect.innerHTML = onsSelectListItem;
+        });
+        onsSelectListItem = '';
+        document.querySelector('#select-tags').appendChild(onsSelect);
+        
+        const removeTag = document.createElement('span');
+        removeTag.setAttribute('id', `tag=remove-${index + 1}`);
+        removeTag.addEventListener('click', (e) => {
+          e.target.parentElement.removeChild(document.getElementById(`tag-list-item-${index + 1}`));
+          document.getElementById(`tag=remove-${index + 1}`).remove();
+        });
+        removeTag.innerHTML = 'Remove'
+        document.querySelector('#select-tags').appendChild(removeTag);
+  
+      });
+    }
   }
 });
 
+const editSelects = function(event) {
+  document.getElementById('choose-sel').removeAttribute('modifier');
+  if (
+    event.target.value == 'material' ||
+    event.target.value == 'underbar'
+  ) {
+    console.log(event);
+    document
+      .getElementById('choose-sel')
+      .setAttribute('modifier', event.target.value);
+  }
+}
 
 /**
- * Statistics and Foods Service 
+ * Statistics and Foods Service
  */
 const loadHomeInfo = async function() {
   showLoading('loading-modal');
   try {
-    const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
-    console.log('FETCHED', res);
+    // const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    // console.log('FETCHED', res);
     const ctx = document.getElementById('myChart').getContext('2d');
     const chart = new Chart(ctx, {
       // The type of chart we want to create
@@ -158,7 +267,7 @@ const loadHomeInfo = async function() {
 
     const items = foods.map(food => {
       const onsListItem = document.createElement('ons-list-item');
-      onsListItem.addEventListener('click', () =>  handleItemClick(food.id));
+      onsListItem.addEventListener('click', () => handleItemClick(food.id));
       onsListItem.innerHTML = `
         <div class="left">
             <img class="list-item__thumbnail" src="${food.img}">
@@ -192,7 +301,6 @@ const submitPhoto = function(photo) {
   // const nav = document.getElementById('appNavigator');
   // nav.pushPage('food-post.html', { data: photo });
 
-
   // axios
   //   .post('/url', formData)
   //   .then(result => {})
@@ -217,5 +325,5 @@ const fakeLoading = function(modal) {
   showLoading(modal);
   setTimeout(function() {
     hideLoading(modal);
-  }, 2000);
+  }, 100);
 };
