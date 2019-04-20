@@ -203,3 +203,23 @@ ons-list-item{
     }
   }
 }
+
+#cam-btn {
+  color: white;
+  background-color: transparent;
+  border: 3px dashed white;
+  border-radius: 10%;
+  margin: 36px 36px;
+  padding: 20px;
+
+  ons-icon {
+    font-size: 70px;
+    text-align: center;
+  }
+
+  p {
+    font-size: 24px;
+    margin: 0;
+    text-align: center;
+  }
+}

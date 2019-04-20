@@ -18,11 +18,19 @@
             <ons-tabbar swipeable position="auto">
                 <ons-tab page="home-tab.html" icon="ion-home, material:md-home" badge="7" active>
                 </ons-tab>
-                <ons-tab page="camera-tab.html" icon="md-camera" active-icon="md-camera">
+                <ons-tab page="camera-tab.html" icon="fa-images" active-icon="fa-images">
                 </ons-tab>
                 <ons-tab page="profile-tab.html" icon="md-settings" active-icon="md-settings">
                 </ons-tab>
             </ons-tabbar>
+
+            <ons-modal id="loading-modal" direction="up">
+            <div style="text-align: center">
+                <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Please wait...
+                </p>
+            </div>
+            </ons-modal>
 
             <script>
                 ons.getScriptPage().onInit = function () {
@@ -32,120 +40,35 @@
             </ons-page>
         </template>
 
-        <template id="home-tab.html">
-            <ons-page id="home-page">
-                <ons-toolbar>
-                    <div class="left">FaNSights</div>
-                </ons-toolbar>
-                <div class="chart">
-                    <div class="chart__header">
-                        <p class="title">
-                            Daily diet
-                        </p>
-                        <p class="sub-title">
-                            Top foods you eat
-                        </p>
-                    </div>
-                    <canvas id="myChart" style="transform: translateX(-30px); margin-top:100px" height="150px"></canvas>
+    <template id="home-tab.html">
+        <ons-page id="home-page">
+            <ons-toolbar>
+                <div class="left">FaNSights</div>
+            </ons-toolbar>
+            <div class="chart">
+                <div class="chart__header">
+                    <p class="title">
+                        Daily diet
+                    </p>
+                    <p class="sub-title">
+                        Top foods you eat
+                    </p>
                 </div>
-                
-                <ons-list id="food-list">
-                    <ons-list-header style="margin-top: 10px;">My Foods</ons-list-header>
-                </ons-list>
+                <canvas id="myChart" style="transform: translateX(-30px); margin-top:100px" height="150px"></canvas>
+            </div>
+            
+            <ons-list id="food-list">
+                <ons-list-header style="margin-top: 10px;">My Foods</ons-list-header>
+            </ons-list>
 
-                <script>
-                    ons.getScriptPage().onInit = function() {
-                        console.log('This is a lifecycle hook from home page!', this);
-                    };
-
-                    const ctx = document.getElementById('myChart').getContext('2d');
-                    const chart = new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: 'pie',
-
-                        // The data for our dataset
-                        data: {
-                            labels: ['Bacon', 'Hotdog', 'Siomai'],
-                            datasets: [{
-                                label: 'My Foods',
-                                backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 99, 66)', 'rgb(255, 99, 198)'],
-                                borderColor: ['rgb(255, 99, 132)', 'rgb(255, 99, 66)', 'rgb(255, 99, 198)'],
-                                data: [3, 10, 5]
-                            }]
-                        },
-
-                        options: {
-                            legend: {
-                                labels: {
-                                    fontColor: 'white',
-                                    // padding: 35
-                                    boxWidth:30,
-                                    position:'absolute'
-                                },
-                                position: 'right',
-                            }
-                        }
-                    });
-                    console.log("halooo",chart);
-                    const foods = [
-                        {
-                            id: 1,
-                            name: 'Bacon',
-                            description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-                            img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-                        },
-                        {
-                            id: 2,
-                            name: 'Hotdog',
-                            description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-                            img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-                        },
-                        {
-                            id: 1,
-                            name: 'Bacon',
-                            description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-                            img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-                        },
-                        {
-                            id: 2,
-                            name: 'Hotdog',
-                            description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-                            img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-                        },
-                        {
-                            id: 1,
-                            name: 'Bacon',
-                            description: 'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-                            img: 'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-                        },
-                        {
-                            id: 2,
-                            name: 'Hotdog',
-                            description: 'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-                            img: 'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-                        }
-                    ];
-
-                    const list = document.getElementById('food-list');
-                    const items = foods.map(food => `
-                        <ons-list-item tappable onclick="handleItemClick(${food.id})">
-                        <div class="left">
-                            <img class="list-item__thumbnail" src="${food.img}">
-                        </div>
-                        <div class="center">
-                            <span class="list-item__title">${food.name}</span><span class="list-item__subtitle">${food.description}</span>
-                        </div>
-                        </ons-list-item>
-                    `);
-                items.forEach(item => {
-                    list.insertAdjacentHTML('beforeend', item);
-                });
-
-                const handleItemClick = function (foodId) {
-                    const selectedFood = foods.find(food => food.id === foodId);
-                    const nav = document.getElementById('appNavigator');
-                    nav.pushPage('food-info.html', { data: selectedFood });
+            <script>
+                /**
+                *   This will get all food list upon initialization of the page
+                */
+                ons.getScriptPage().onInit = function() {
+                    console.log('This is a lifecycle hook from home page!', this);
                 };
+                loadHomeInfo();
             </script>
 
         </ons-page>
@@ -153,6 +76,7 @@
 
     <template id="food-info.html">
         <ons-page id="food-info">
+            
             <ons-toolbar>
                 <div class="left">
                     <ons-back-button>My Foods</ons-back-button>
@@ -160,29 +84,115 @@
                 <div class="center"></div>
             </ons-toolbar>
 
-                <ons-list style="margin-top: 30px; background: transparent">
-                    <ons-list-item modifier="chevron">
-                       <div class="left">
-                            <img id="fi-img" class="list-item__thumbnail" src="https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg">
-                        </div> 
-                        <div class="center">
-                            <span id="fi-title" class="list-item__title"></span>
-                            <span id="fi-subtitle" class="list-item__subtitle"></span>
-                        </div>
-                    </ons-list-item>
-                </ons-list>
+            <ons-list style="margin-top: 30px; background: transparent">
+                <ons-list-item>
+                    <div class="left">
+                        <img id="fi-img" class="list-item__thumbnail" src="https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg">
+                    </div> 
+                    <div class="center">
+                        <span id="fi-title" class="list-item__title"></span>
+                        <span id="fi-subtitle" class="list-item__subtitle"></span>
+                    </div>
+                </ons-list-item>
+            </ons-list>
 
-                <script>
-                    console.log(document.getElementById('appNavigator'));
-                </script>
-            </ons-page>
-        </template>
+            <div class="diet">
+                <div class="diet__header">
+                    <p class="">
+                        My diet
+                    </p>
+                    <button class="diet-btn">
+                        Diet analytics
+                    </button>
+                </div>
+                <div class="diet__info">
+                    <div class="item">
+                        <p class="title">
+                            Daily heavy meal
+                        </p>
+                        <p class="info ">
+                            3 / 3
+                        </p>
+                    </div>
+                    <div class="item">
+                        <p class="title">
+                            Daily snack meal
+                        </p>
+                        <p class="info ">
+                            3 / 5
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <ons-modal id="food-info-modal" direction="up">
+            <div style="text-align: center">
+                <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Getting info...
+                </p>
+            </div>
+            </ons-modal>
+
+            <script>
+                console.log(document.getElementById('appNavigator'));
+            </script>
+        </ons-page>
+    </template>
 
         <template id="camera-tab.html">
             <ons-page id="camera-page">
                 <ons-toolbar>
                     <div class="left">Camera</div>
                 </ons-toolbar>
+
+                <input id="ct-browse-file" type="file" accept="image/*" hidden>
+                <input id="ct-camera" type="file" accept="image/*" capture="user" hidden>
+                <button id="cam-btn">
+                    <ons-icon icon="md-camera"></ons-icon>
+                    <p>Open Camera</p>
+                </button>
+
+                <ons-fab position="bottom right" onclick="browsePhotos()">
+                    <ons-icon icon="md-plus"></ons-icon>
+                </ons-fab>
+
+                <script>
+                    /**
+                    *   Trigger opening of camera
+                    */
+                    const camBtn = document.getElementById('cam-btn');
+                    camBtn.addEventListener('click', () => {
+                        document.getElementById('ct-camera').click();
+                    });
+
+                    /**
+                    *   Trigger opening of file browser
+                    */
+
+                    const browsePhotos = function() {
+                        document.getElementById('ct-browse-file').click();
+                    };
+
+                    /**
+                    *   Listen to local file browsing
+                    */
+                   const browseFiles = document.getElementById('ct-browse-file');
+                   browseFiles.addEventListener('change', (e) => {
+                        const selectedImg = e.target.files[0];
+                        submitPhoto(selectedImg);
+                    });
+                    
+                    /**
+                    *   Listen to captured image
+                    */
+                    const browseCamera = document.getElementById('ct-camera');
+                    browseCamera.addEventListener('change', (e) => {
+                        const capturedImg = e.target.files[0];
+                        submitPhoto(capturedImg);
+                    })
+
+                </script>
+            
             </ons-page>
         </template>
 
@@ -238,6 +248,28 @@
                         </div>
                     </div>
                 </div>
+
+                <ons-list style="margin-top: 30px; background: transparent">
+                    <ons-list-header style="margin-top: 10px;">Settings</ons-list-header>
+                    <ons-list-item>
+                        <div class="center">
+                            <span id="fi-title" class="list-item__title">Diet Settings</span>
+                            <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies, while important for establishing efficacy</span>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="center">
+                            <span id="fi-title" class="list-item__title">Change Password</span>
+                            <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies, while important for establishing efficacy</span>
+                        </div>
+                    </ons-list-item>
+                    <ons-list-item>
+                        <div class="center">
+                            <span id="fi-title" class="list-item__title">My</span>
+                            <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies, while important for establishing efficacy</span>
+                        </div>
+                    </ons-list-item>
+                </ons-list>
             </ons-page>
         </template>
 

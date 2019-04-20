@@ -161,3 +161,18 @@ ons-list-item:active {
       .diet__info .item .info {
         margin-top: 10px;
         font-weight: bold; }
+
+#cam-btn {
+  color: white;
+  background-color: transparent;
+  border: 3px dashed white;
+  border-radius: 10%;
+  margin: 36px 36px;
+  padding: 20px; }
+  #cam-btn ons-icon {
+    font-size: 70px;
+    text-align: center; }
+  #cam-btn p {
+    font-size: 24px;
+    margin: 0;
+    text-align: center; }
