@@ -6,6 +6,9 @@ body {
   body {
     max-width: 100%; } }
 
+.bold {
+  font-weight: bold; }
+
 .logo {
   height: 40%; }
   .logo img {
@@ -102,3 +105,59 @@ ons-list-item:active {
     .chart__header .sub-title {
       color: #bdbdbd;
       border-bottom: solid 1px #707070; }
+
+.profile {
+  margin: 40px;
+  display: flex;
+  align-items: center; }
+  .profile p {
+    margin: 0;
+    padding: 0; }
+  .profile__img {
+    width: 30%; }
+    .profile__img img {
+      height: 70px;
+      width: 70px;
+      border-radius: 35px; }
+  .profile__info {
+    margin-left: 20px; }
+    .profile__info .name {
+      font-size: 20px;
+      font-weight: bold; }
+    .profile__info .email {
+      color: #4B88E4;
+      font-size: 12px;
+      font-style: italic; }
+    .profile__info .goals {
+      font-weight: bold;
+      color: #bdbdbd; }
+
+.diet {
+  margin: 20px 40px; }
+  .diet__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    .diet__header .diet-btn {
+      height: 20px;
+      background-color: #FFB554;
+      border-radius: 20px;
+      padding: 0 10px;
+      border: none;
+      color: #fafafa; }
+  .diet__info {
+    padding: 20px 10px;
+    border-top: solid #fafafa 1px;
+    border-bottom: solid #fafafa 1px;
+    display: flex;
+    justify-content: space-around; }
+    .diet__info .item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column; }
+      .diet__info .item p {
+        margin: 0; }
+      .diet__info .item .info {
+        margin-top: 10px;
+        font-weight: bold; }

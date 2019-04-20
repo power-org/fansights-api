@@ -9,17 +9,17 @@ const { PowerSchema } = require('../helper/SchemaChecker');
 const schemas = require('./schemas');
 
 router.get('/', 
-// function(req, res, next){
-//     req.session.user = {
-//         id: 1,
-//         name: 'Saito',
-//         email: 'saito@email.com',
-//         password: '1a1dc91c907325c69271ddf0c944bc72',
-//         profile: null,
-//         date_created: '2019-04-19T05:19:53.000Z'
-//     };
-//     next();
-// },
+function(req, res, next){
+    req.session.user = {
+        id: 1,
+        name: 'Saito',
+        email: 'saito@email.com',
+        password: '1a1dc91c907325c69271ddf0c944bc72',
+        profile: null,
+        date_created: '2019-04-19T05:19:53.000Z'
+    };
+    next();
+},
 mw.isAuth, (req, res)=>{
     res.render('index');
 });

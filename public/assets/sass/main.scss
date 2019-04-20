@@ -11,6 +11,9 @@ body{
     max-width: 100%;
   }
 }
+.bold{
+  font-weight: bold;
+}
 .logo{
   height: 40%;
   img{
@@ -128,6 +131,75 @@ ons-list-item{
     .sub-title{
       color: #bdbdbd;
       border-bottom: solid 1px #707070;
+    }
+  }
+}
+.profile{
+  margin: 40px;
+  display: flex;
+  align-items: center;
+  p{
+    margin: 0;
+    padding: 0;
+  }
+  &__img{
+    width: 30%;
+    img{
+      height: 70px;
+      width: 70px;
+      border-radius: 35px;
+    }
+  }
+  &__info{
+    margin-left: 20px;
+    .name{
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .email{
+      color: #4B88E4;
+      font-size: 12px;
+      font-style: italic;
+    }
+    .goals{
+      font-weight: bold;
+      color: #bdbdbd;
+    }
+  }
+}
+.diet{
+  margin: 20px 40px;
+  &__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .diet-btn{
+      height: 20px;
+      background-color: #FFB554;
+      border-radius: 20px;
+      padding:0 10px;
+      border:none;
+      color: #fafafa;
+    }
+  }
+  &__info{
+    padding: 20px 10px;
+    border-top: solid #fafafa 1px;
+    border-bottom: solid #fafafa 1px;
+    display: flex;
+    justify-content: space-around;
+    .item{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      p{
+        margin: 0;
+      }
+      .info{
+        margin-top: 10px;
+        font-weight: bold;
+      }
     }
   }
 }
