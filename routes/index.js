@@ -8,7 +8,7 @@ const signup = require('../models/signup');
 const { PowerSchema } = require('../helper/SchemaChecker');
 const schemas = require('./schemas');
 
-router.get('/', 
+router.get('/',
 function(req, res, next){
     req.session.user = {
         id: 1,
@@ -25,6 +25,7 @@ mw.isAuth, (req, res)=>{
 });
 
 router.use('/api/upload', require('./upload'));
+router.use('/github', require('./github-webook'));
 
 router.get('/login', mw.hasSession, (req, res)=>{
     res.render('login');
