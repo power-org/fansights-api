@@ -25,20 +25,20 @@
             </ons-tabbar>
 
             <ons-modal id="loading-modal" direction="up">
-            <div style="text-align: center">
-                <p>
-                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Please wait...
-                </p>
-            </div>
+                <div style="text-align: center">
+                    <p>
+                        <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Please wait...
+                    </p>
+                </div>
             </ons-modal>
 
             <script>
                 ons.getScriptPage().onInit = function () {
                     console.log('This is a lifecycle hook!', this);
-                    };
-                </script>
-            </ons-page>
-        </template>
+                };
+            </script>
+        </ons-page>
+    </template>
 
     <template id="home-tab.html">
         <ons-page id="home-page">
@@ -56,7 +56,7 @@
                 </div>
                 <canvas id="myChart" style="transform: translateX(-30px); margin-top:100px" height="150px"></canvas>
             </div>
-            
+
             <ons-list id="food-list">
                 <ons-list-header style="margin-top: 10px;">My Foods</ons-list-header>
             </ons-list>
@@ -65,7 +65,7 @@
                 /**
                 *   This will get all food list upon initialization of the page
                 */
-                ons.getScriptPage().onInit = function() {
+                ons.getScriptPage().onInit = function () {
                     console.log('This is a lifecycle hook from home page!', this);
                 };
                 loadHomeInfo();
@@ -76,7 +76,7 @@
 
     <template id="food-info.html">
         <ons-page id="food-info">
-            
+
             <ons-toolbar>
                 <div class="left">
                     <ons-back-button>My Foods</ons-back-button>
@@ -85,10 +85,10 @@
             </ons-toolbar>
 
             <ons-list style="margin-top: 30px; background: transparent">
-                <ons-list-item>
+                <ons-list-item style="padding: 0 40px;">
                     <div class="left">
                         <img id="fi-img" class="list-item__thumbnail" src="https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg">
-                    </div> 
+                    </div>
                     <div class="center">
                         <span id="fi-title" class="list-item__title"></span>
                         <span id="fi-subtitle" class="list-item__subtitle"></span>
@@ -96,6 +96,172 @@
                 </ons-list-item>
             </ons-list>
 
+            <div class="diet">
+                <div class="diet__header">
+                    <p class="">
+                        Food stats
+                    </p>
+                    <button class="diet-btn">
+                        Diet analytics
+                    </button>
+                </div>
+                <div class="diet__info">
+                    <div class="item">
+                        <p class="title">
+                            Last eaten
+                        </p>
+                        <p class="info ">
+                            March 20, 2019
+                        </p>
+                    </div>
+                    <div class="item">
+                        <p class="title">
+                            Eaten
+                        </p>
+                        <p class="info ">
+                            I've ate 10 so far
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="food-trivia">
+                <p class="ingredients">
+                    <b>Ingredients</b>
+                    FILLING: CABBAGE, CRAB, CRAB FLAKES [SURIMI (FISH PASTE OF POLLOCK, AND/OR GOLDEN THREADFIN BREAM),
+                    WATER, WHEAT STARCH, KONJAC FLOUR
+                    <a href="#"> See more . . . </a>
+                </p>
+                <table cellpadding="0" cellspacing="0">
+                    <thead>
+                        <th>Nutrient</th>
+                        <th>Unit</th>
+                        <th>Value per 100 g</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Energy</td>
+                            <td>kcal</td>
+                            <td>168</td>
+                        </tr>
+                        <tr>
+                            <td>Energy</td>
+                            <td>kcal</td>
+                            <td>168</td>
+                        </tr>
+                        <tr>
+                            <td>Energy</td>
+                            <td>kcal</td>
+                            <td>168</td>
+                        </tr>
+                        <tr>
+                            <td>Energy</td>
+                            <td>kcal</td>
+                            <td>168</td>
+                        </tr>
+                        <tr>
+                            <td>Energy</td>
+                            <td>kcal</td>
+                            <td>168</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ons-modal id="food-info-modal" direction="up">
+                <div style="text-align: center">
+                    <p>
+                        <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Getting info...
+                    </p>
+                </div>
+            </ons-modal>
+
+            <script>
+                console.log(document.getElementById('appNavigator'));
+            </script>
+        </ons-page>
+    </template>
+
+    <template id="camera-tab.html">
+        <ons-page id="camera-page">
+            <ons-toolbar>
+                <div class="left">Camera</div>
+            </ons-toolbar>
+
+            <input id="ct-browse-file" type="file" accept="image/*" hidden>
+            <input id="ct-camera" type="file" accept="image/*" capture="user" hidden>
+            <button id="cam-btn">
+                <ons-icon icon="md-camera"></ons-icon>
+                <p>Open Camera</p>
+            </button>
+
+            <ons-fab position="bottom right" onclick="browsePhotos()">
+                <ons-icon icon="md-plus"></ons-icon>
+            </ons-fab>
+
+            <script>
+                /**
+                *   Trigger opening of camera
+                */
+                const camBtn = document.getElementById('cam-btn');
+                camBtn.addEventListener('click', () => {
+                    document.getElementById('ct-camera').click();
+                });
+
+                /**
+                *   Trigger opening of file browser
+                */
+
+                const browsePhotos = function () {
+                    document.getElementById('ct-browse-file').click();
+                };
+
+                /**
+                *   Listen to local file browsing
+                */
+                const browseFiles = document.getElementById('ct-browse-file');
+                browseFiles.addEventListener('change', (e) => {
+                    const selectedImg = e.target.files[0];
+                    submitPhoto(selectedImg);
+                });
+
+                /**
+                *   Listen to captured image
+                */
+                const browseCamera = document.getElementById('ct-camera');
+                browseCamera.addEventListener('change', (e) => {
+                    const capturedImg = e.target.files[0];
+                    submitPhoto(capturedImg);
+                })
+
+            </script>
+
+        </ons-page>
+    </template>
+
+    <template id="profile-tab.html">
+        <ons-page id="profile-page">
+            <ons-toolbar>
+                <div class="left">Profile</div>
+            </ons-toolbar>
+            <div class="profile">
+                <div class="profile__img">
+                    <img src="https://tinyfac.es/data/avatars/475605E3-69C5-4D2B-8727-61B7BB8C4699-500w.jpeg" />
+                </div>
+                <div class="profile__info">
+                    <p class="name">
+                        Saito Hiraga
+                    </p>
+                    <p class="email">
+                        saito_hiraga@gmail.com
+                    </p>
+                    <div class="goals">
+                        Goals
+                        <p>
+                            Gain this ammount
+                        </p>
+                    </div>
+                </div>
+            </div>
             <div class="diet">
                 <div class="diet__header">
                     <p class="">
@@ -125,155 +291,35 @@
                 </div>
             </div>
 
-            <ons-modal id="food-info-modal" direction="up">
-            <div style="text-align: center">
-                <p>
-                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Getting info...
-                </p>
-            </div>
-            </ons-modal>
-
-            <script>
-                console.log(document.getElementById('appNavigator'));
-            </script>
+            <ons-list style="margin-top: 30px; background: transparent">
+                <ons-list-header style="margin-top: 10px;">Settings</ons-list-header>
+                <ons-list-item>
+                    <div class="center">
+                        <span id="fi-title" class="list-item__title">Diet Settings</span>
+                        <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
+                            while important for establishing efficacy</span>
+                    </div>
+                </ons-list-item>
+                <ons-list-item>
+                    <div class="center">
+                        <span id="fi-title" class="list-item__title">Change Password</span>
+                        <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
+                            while important for establishing efficacy</span>
+                    </div>
+                </ons-list-item>
+                <ons-list-item>
+                    <div class="center">
+                        <span id="fi-title" class="list-item__title">My</span>
+                        <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
+                            while important for establishing efficacy</span>
+                    </div>
+                </ons-list-item>
+            </ons-list>
         </ons-page>
     </template>
 
-        <template id="camera-tab.html">
-            <ons-page id="camera-page">
-                <ons-toolbar>
-                    <div class="left">Camera</div>
-                </ons-toolbar>
+    <%- include('common/js') %>
+    <script src="/assets/js/app.js"></script>
+</body>
 
-                <input id="ct-browse-file" type="file" accept="image/*" hidden>
-                <input id="ct-camera" type="file" accept="image/*" capture="user" hidden>
-                <button id="cam-btn">
-                    <ons-icon icon="md-camera"></ons-icon>
-                    <p>Open Camera</p>
-                </button>
-
-                <ons-fab position="bottom right" onclick="browsePhotos()">
-                    <ons-icon icon="md-plus"></ons-icon>
-                </ons-fab>
-
-                <script>
-                    /**
-                    *   Trigger opening of camera
-                    */
-                    const camBtn = document.getElementById('cam-btn');
-                    camBtn.addEventListener('click', () => {
-                        document.getElementById('ct-camera').click();
-                    });
-
-                    /**
-                    *   Trigger opening of file browser
-                    */
-
-                    const browsePhotos = function() {
-                        document.getElementById('ct-browse-file').click();
-                    };
-
-                    /**
-                    *   Listen to local file browsing
-                    */
-                   const browseFiles = document.getElementById('ct-browse-file');
-                   browseFiles.addEventListener('change', (e) => {
-                        const selectedImg = e.target.files[0];
-                        submitPhoto(selectedImg);
-                    });
-                    
-                    /**
-                    *   Listen to captured image
-                    */
-                    const browseCamera = document.getElementById('ct-camera');
-                    browseCamera.addEventListener('change', (e) => {
-                        const capturedImg = e.target.files[0];
-                        submitPhoto(capturedImg);
-                    })
-
-                </script>
-            
-            </ons-page>
-        </template>
-
-        <template id="profile-tab.html">
-            <ons-page id="profile-page">
-                <ons-toolbar>
-                    <div class="left">Profile</div>
-                </ons-toolbar>
-                <div class="profile">
-                    <div class="profile__img">
-                        <img src="https://tinyfac.es/data/avatars/475605E3-69C5-4D2B-8727-61B7BB8C4699-500w.jpeg"/>
-                    </div>
-                    <div class="profile__info">
-                        <p class="name">
-                            Saito Hiraga
-                        </p>
-                        <p class="email">
-                            saito_hiraga@gmail.com
-                        </p>
-                        <div class="goals">
-                            Goals
-                            <p>
-                                Gain this ammount
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="diet">
-                    <div class="diet__header">
-                        <p class="">
-                            My diet
-                        </p>
-                        <button class="diet-btn">
-                            Diet analytics
-                        </button>
-                    </div>
-                    <div class="diet__info">
-                        <div class="item">
-                            <p class="title">
-                                Daily heavy meal
-                            </p>
-                            <p class="info ">
-                                3 / 3
-                            </p>
-                        </div>
-                        <div class="item">
-                            <p class="title">
-                                Daily snack meal
-                            </p>
-                            <p class="info ">
-                                3 / 5
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <ons-list style="margin-top: 30px; background: transparent">
-                    <ons-list-header style="margin-top: 10px;">Settings</ons-list-header>
-                    <ons-list-item>
-                        <div class="center">
-                            <span id="fi-title" class="list-item__title">Diet Settings</span>
-                            <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies, while important for establishing efficacy</span>
-                        </div>
-                    </ons-list-item>
-                    <ons-list-item>
-                        <div class="center">
-                            <span id="fi-title" class="list-item__title">Change Password</span>
-                            <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies, while important for establishing efficacy</span>
-                        </div>
-                    </ons-list-item>
-                    <ons-list-item>
-                        <div class="center">
-                            <span id="fi-title" class="list-item__title">My</span>
-                            <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies, while important for establishing efficacy</span>
-                        </div>
-                    </ons-list-item>
-                </ons-list>
-            </ons-page>
-        </template>
-
-        <%- include('common/js') %>
-        <script src="/assets/js/app.js"></script>
-    </body>
 </html>

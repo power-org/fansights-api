@@ -116,9 +116,9 @@ ons-list-item:active {
   .profile__img {
     width: 30%; }
     .profile__img img {
-      height: 70px;
-      width: 70px;
-      border-radius: 35px; }
+      height: 100%;
+      width: 100%;
+      border-radius: 50%; }
   .profile__info {
     margin-left: 20px; }
     .profile__info .name {
@@ -176,3 +176,36 @@ ons-list-item:active {
     font-size: 24px;
     margin: 0;
     text-align: center; }
+
+.food-trivia .ingredients {
+  padding: 0 40px 0 40px;
+  color: #767676;
+  text-transform: capitalize; }
+  .food-trivia .ingredients b {
+    color: #fafafa; }
+  .food-trivia .ingredients a {
+    color: #4B88E4; }
+
+.food-trivia table {
+  width: 100%; }
+  .food-trivia table thead {
+    background-color: #484848; }
+    .food-trivia table thead th {
+      height: 50px;
+      width: calc(100% / 3);
+      font-weight: normal; }
+      .food-trivia table thead th:nth-child(1) {
+        padding-left: 40px; }
+      .food-trivia table thead th:nth-child(3) {
+        padding-right: 40px; }
+  .food-trivia table tbody {
+    padding: 0 40px; }
+    .food-trivia table tbody td {
+      text-align: center;
+      height: 50px;
+      width: calc(100% / 3);
+      font-weight: normal; }
+      .food-trivia table tbody td:nth-child(1) {
+        padding-left: 40px; }
+      .food-trivia table tbody td:nth-child(3) {
+        padding-right: 40px; }

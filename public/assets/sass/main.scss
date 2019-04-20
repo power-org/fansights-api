@@ -145,9 +145,9 @@ ons-list-item{
   &__img{
     width: 30%;
     img{
-      height: 70px;
-      width: 70px;
-      border-radius: 35px;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
     }
   }
   &__info{
@@ -221,5 +221,50 @@ ons-list-item{
     font-size: 24px;
     margin: 0;
     text-align: center;
+  }
+}
+.food-trivia{
+  .ingredients{
+    padding: 0 40px 0 40px;
+    color: #767676;
+    text-transform: capitalize;
+    b{
+      color: #fafafa;
+    }
+    a{
+      color: #4B88E4
+    }
+  }
+  table{
+    width: 100%;
+    thead{
+      background-color: #484848;
+      th{
+        height: 50px;
+        width: calc(100% / 3);
+        font-weight: normal;
+        &:nth-child(1){
+          padding-left: 40px;
+        }
+        &:nth-child(3){
+          padding-right: 40px;
+        }
+      }
+    }
+    tbody{
+      padding: 0 40px;
+      td{
+        text-align: center;
+        height: 50px;
+        width: calc(100% / 3);
+        font-weight: normal;
+        &:nth-child(1){
+          padding-left: 40px;
+        }
+        &:nth-child(3){
+          padding-right: 40px;
+        }
+      }
+    }
   }
 }
