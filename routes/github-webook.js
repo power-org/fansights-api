@@ -18,11 +18,10 @@ function deploy(res) {
     console.log('STDERR', stderr);
     if (err) {
       console.error(err);
-      return res.send(500);
     }
     console.log('STDOUT', stdout);
-    res.status(200).send('OK');
   });
+  res.status(200).send('OK');
 }
 
 module.exports = router;
