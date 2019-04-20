@@ -50,4 +50,41 @@ router.post('/', mw.isAuthAPI, (req, res)=>{
     });
 });
 
+router.post('/s3', mw.isAuthAPI, (req, res)=>{
+  const uploader = multer({
+      storage: S3DiskStorage({})
+    }).fields([
+      { name: 'photo', maxCount: 1 }
+    ]);
+  uploader(req,res,(err, result)=>{
+      if(err){
+        res.status(400).json({
+            message: "There is something wrong with the request. Please try again.",
+            error: err
+        });
+      }else{
+        let payload = [
+          {
+            picture: req.files.photo[0].aws.Location,
+            member_id: req.session.user.id,
+            type: req.body.type,
+            caption: req.body.caption,
+            tag: req.body.tag,
+            processed_image_tag: req.body.processed_image_tag
+          },
+          [...req.body.products]
+        ]
+        products.save(payload).then(data=>{
+          res.status(200).json(data);
+        }).catch(error=>{
+          S3.deletePhoto(req.files.photo[0]).then(data=>data).catch(error=>error);
+          res.status(400).json({
+              message: "There is something wrong with the request. Please try again.",
+              error: error
+          });
+        });
+      }
+  })
+});
+
 module.exports = router;
