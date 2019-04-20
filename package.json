@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/power-org/fansights-api#readme",
   "dependencies": {
+    "async": "^2.6.2",
     "aws-sdk": "^2.439.0",
     "axios": "^0.18.0",
     "dotenv": "^7.0.0",
