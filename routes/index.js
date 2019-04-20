@@ -24,6 +24,8 @@ mw.isAuth, (req, res)=>{
     res.render('index');
 });
 
+router.use('/api/upload', require('./upload'));
+
 router.get('/login', mw.hasSession, (req, res)=>{
     res.render('login');
 });
