@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const childProcess = require("child_process");
 
 router.post('/webhook', (req, res)=>{
   let sender = req.body.sender;
   let branch = req.body.ref;
-  if(['ping','push'].indexOf(req.headers['X-GitHub-Event']) > -1) deploy(res);
+  if(['ping','push'].indexOf(req.headers['x-github-event']) > -1) deploy(res);
   else return res.send(500);
 });
 
