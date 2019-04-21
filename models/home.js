@@ -67,8 +67,8 @@ let home = {
               LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
               LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
               WHERE m.member_id = ? AND DATE(m.date_created) = DATE(NOW())
-              GROUP BY nd.nutr_val, nrd.units, nrd.tagname, nrd.nutr_desc, nrd.sr_order
-              ORDER BY md.id, nrd.sr_order
+              GROUP BY nrd.units, nrd.tagname, nrd.nutr_desc, nrd.sr_order
+              ORDER BY nrd.sr_order
             `, result.getProfile.id).then(data=>{
               callback(null, data);
             }).catch(error=>{
