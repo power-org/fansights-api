@@ -43,6 +43,34 @@ let home = {
           }
         });
       });
+    },
+    getMealDetails: (meal_id)=>{
+      return new Promise((resolve, reject) => {
+        Database.execute(`
+        SELECT
+          md.id,
+          md.tag,
+          md.mm_id,
+          fd.id as products_id, fd.ndb_no, fd.long_desc,
+          nd.nutr_val,
+          nrd.units,
+          nrd.tagname,
+          nrd.nutr_desc,
+          nrd.num_dec,
+          nrd.sr_order
+        FROM meal_details md
+        LEFT JOIN food_des fd ON fd.id = md.products_id
+        LEFT JOIN fd_group fdg ON fdg.code = fd.group_code
+        LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
+        LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
+        WHERE md.mm_id IN (?)
+        ORDER BY md.id, nrd.sr_order
+        `, meal_id).then(data=>{
+          resolve(data);
+        }).catch(error=>{
+          reject(error);
+        })
+      });
     }
 };
 
