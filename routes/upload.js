@@ -4,6 +4,8 @@ const mw = require('../middlewares/auth');
 const { S3, S3DiskStorage, API, AzureDiskStorage } = require('../lib');
 const products = require('../models/products');
 
+const home = require('../models/home');
+
 const multer  = require('multer');
 router.post('/', mw.isAuthAPI, (req, res)=>{
     const uploader = multer({
@@ -75,7 +77,15 @@ router.post('/s3', mw.isAuthAPI, (req, res)=>{
           [...req.body.products]
         ]
         products.save(payload).then(data=>{
-          res.status(200).json(data);
+          home.getProfileDetails(req.session.user).then(data=>{
+            res.status(200).json(data);
+          }).catch(error=>{
+            S3.deletePhoto(req.files.photo[0]).then(data=>data).catch(error=>error);
+            res.status(400).json({
+                message: "There is something wrong with the request. Please try again.",
+                error: error
+            });
+          })
         }).catch(error=>{
           S3.deletePhoto(req.files.photo[0]).then(data=>data).catch(error=>error);
           res.status(400).json({
