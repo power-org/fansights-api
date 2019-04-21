@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%- include('common/css') %>
     <link rel="stylesheet" href="/assets/css/main.css">
-    <script>window.USER = <%- JSON.stringify(data); %></script>
+    <script>window.USER = <% - JSON.stringify(data); %></script>
 </head>
 
 <body>
@@ -34,9 +34,9 @@
             </ons-modal>
 
             <script>
-                ons.getScriptPage().onInit = function () {
-                    console.log('This is a lifecycle hook!', this);
-                };
+                    ons.getScriptPage().onInit = function () {
+                        console.log('This is a lifecycle hook!', this);
+                    };
             </script>
         </ons-page>
     </template>
@@ -44,7 +44,7 @@
     <template id="home-tab.html">
         <ons-page id="home-page">
             <ons-toolbar>
-                <div class="left">FaNSights</div>
+                <div class="left"><img src="/assets/img/FanSights_minimal-white.svg">FaNSights</div>
             </ons-toolbar>
             <div class="chart">
                 <div class="chart__header">
@@ -156,27 +156,36 @@
     <template id="camera-tab.html">
         <ons-page id="camera-page">
             <ons-toolbar>
-                <div class="left">Camera</div>
+                <div class="left"><img src="/assets/img/FanSights_minimal-white.svg">Camera</div>
             </ons-toolbar>
 
             <input id="ct-browse-file" type="file" accept="image/*" hidden>
             <input id="ct-camera" type="file" accept="image/*" capture="user" hidden>
-
-            <img id="photo-viewer" height="200px">
-            <label>Caption</label>
-            <ons-input id="ct-caption" modifier="underbar" placeholder="Add a short caption for this photo" float></ons-input>
-            <label>Tags</label>
-            <ons-input id="ct-tags" modifier="underbar" placeholder="Add tags to this photo. (ex. burger, yummy, sandwich)" float></ons-input>
-            <h4>Detected Tags</h4>
-            <%# NOTE: DONT REMOVE THIS. THIS RENDERS ALL SELECTED TAGS %>
-            <div id="select-tags"></div>
+            <div class="camera">
+                <div class="caption">
+                    <!-- <label>Caption</label> -->
+                    <!-- <textarea class="textarea" rows="3" placeholder="Textarea"></textarea> -->
+                    <textarea class="textarea" rows="5" id="ct-caption" modifier="underbar" placeholder="Add a short caption for this photo"
+                        float></textarea>
+                </div>
+                <div class="thumbnail">
+                    <label>Tags</label>
+                    <ons-input id="ct-tags" modifier="underbar" placeholder="Add tags to this photo. (ex. burger, yummy, sandwich)"
+                        float></ons-input>
+                    <img id="photo-viewer" height="auto">
+                </div>
+                <h4>Detected Tags</h4>
+                <%# NOTE: DONT REMOVE THIS. THIS RENDERS ALL SELECTED TAGS %>
+                <div id="select-tags"></div>
+            </div>
         </ons-page>
     </template>
 
     <template id="profile-tab.html">
         <ons-page id="profile-page">
             <ons-toolbar>
-                <div class="left">Profile</div>
+
+                <div class="left"><img src="/assets/img/FanSights_minimal-white.svg">Profile</div>
             </ons-toolbar>
             <div class="profile">
                 <div class="profile__img">
@@ -245,13 +254,20 @@
             </ons-list>
 
             <ons-modal id="pp-diet-settings-modal" direction="up">
-                <div style="text-align: center">
-                    <p>Number of Heavy Meal</p>
-                    <input id="pp-heavy-meal" type="range" min="1" max="20">
-                    <p>Number of Snack Meal</p>
-                    <input id="pp-snack-meal" type="range" min="1" max="20">
-                    <ons-button onclick="saveDietSettings()">Save Settings</ons-button>
-                    <ons-button onclick="closeDietSettings()">Cancel</ons-button>
+                <div class="diet-setting">
+                    <p class="diet-setting__header"><span class="fa fa-cog"></span>&nbsp; Diet setting</p>
+                    <div class="diet-setting__body" style="text-align: center">
+                        <p>Number of Heavy Meal</p>
+                        <ons-range id="pp-heavy-meal" style="width: 70%; margin: 20px 40px;" min="1" max="20"></ons-range>
+                        <!-- <input id="pp-heavy-meal" type="range" min="1" max="20"> -->
+                        <p>Number of Snack Meal</p>
+                        <ons-range id="pp-snack-meal" style="width: 70%; margin: 20px 40px;" min="1" max="20"></ons-range>
+                        <!-- <input id="pp-snack-meal" type="range" min="1" max="20"> -->
+                    </div>
+                    <div class="diet-setting__footer">
+                        <ons-button onclick="closeDietSettings()">Cancel</ons-button>
+                        <ons-button onclick="saveDietSettings()">Save Settings</ons-button>
+                    </div>
                 </div>
             </ons-modal>
         </ons-page>

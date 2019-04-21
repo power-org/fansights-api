@@ -20,6 +20,11 @@ body{
     height: 150px;
   }
 }
+.toolbar{
+  img{
+    margin: 0 10px;
+  }
+}
 .max-height{
   height: 100vh;
 }
@@ -298,6 +303,109 @@ ons-list-item{
         }
         &:nth-child(3){
           padding-right: 40px;
+        }
+      }
+    }
+  }
+}
+.camera{
+  .caption{
+    display: flex;
+    textarea{
+      width: 100%;
+      height: auto;
+      border: none;
+      padding: 20px;
+    }
+  }
+  .thumbnail{
+    display: flex;
+    flex-direction: column;
+    label{
+      padding: 0 20px;
+    }
+    ons-input{
+      width: 100%;
+      input{
+        padding: 20px;
+      }
+    }
+    img{
+      width: 100%;
+      border: none;
+    }
+  }
+  h4{
+    background-color: #484848;
+    padding: 20px
+  }
+  #select-tags{
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    color: #767676;
+    .button{
+      margin-top: 20px;
+      border-radius: 20px;
+    }
+    .select{
+      select{
+        color: #767676;
+      }
+    }
+  }
+}
+#profile-page{
+  .modal{
+    background-color: rgba(white,.5);
+    &__content{
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      .diet-setting{
+        width: 100%;
+        background-color: white;
+        border-radius: 10px 10px 0 0;
+      &__header{
+        display: flex;
+        justify-content: flex-start;
+        color: #484848;
+        border-bottom:solid 1px #707070;
+        padding: 20px 0;
+        margin: 0 30px;
+        }
+        &__body{
+          padding-bottom: 20px;
+          p{
+            text-align: left;
+            color: #767676;
+            margin: 20px 40px;
+          }
+        }
+        &__footer{
+          width: 100%;
+          display: flex;
+          .button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            background-color: white;
+            box-shadow: 0px 0px 5px rgba(black,.15);
+            height: 50px;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: bold;
+            &:focus{
+              background-color: rgba(black,.15);
+            }
+            &:nth-child(1){
+              color: #767676;
+            }
+            &:nth-child(2){
+              color: #FFB554;
+            }
+          }
         }
       }
     }

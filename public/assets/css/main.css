@@ -14,6 +14,9 @@ body {
   .logo img {
     height: 150px; }
 
+.toolbar img {
+  margin: 0 10px; }
+
 .max-height {
   height: 100vh; }
 
@@ -236,3 +239,83 @@ ons-list-item:active {
         padding-left: 40px; }
       .food-trivia table tbody td:nth-child(3) {
         padding-right: 40px; }
+
+.camera .caption {
+  display: flex; }
+  .camera .caption textarea {
+    width: 100%;
+    height: auto;
+    border: none;
+    padding: 20px; }
+
+.camera .thumbnail {
+  display: flex;
+  flex-direction: column; }
+  .camera .thumbnail label {
+    padding: 0 20px; }
+  .camera .thumbnail ons-input {
+    width: 100%; }
+    .camera .thumbnail ons-input input {
+      padding: 20px; }
+  .camera .thumbnail img {
+    width: 100%;
+    border: none; }
+
+.camera h4 {
+  background-color: #484848;
+  padding: 20px; }
+
+.camera #select-tags {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  color: #767676; }
+  .camera #select-tags .button {
+    margin-top: 20px;
+    border-radius: 20px; }
+  .camera #select-tags .select select {
+    color: #767676; }
+
+#profile-page .modal {
+  background-color: rgba(255, 255, 255, 0.5); }
+  #profile-page .modal__content {
+    position: fixed;
+    bottom: 0;
+    width: 100%; }
+    #profile-page .modal__content .diet-setting {
+      width: 100%;
+      background-color: white;
+      border-radius: 10px 10px 0 0; }
+      #profile-page .modal__content .diet-setting__header {
+        display: flex;
+        justify-content: flex-start;
+        color: #484848;
+        border-bottom: solid 1px #707070;
+        padding: 20px 0;
+        margin: 0 30px; }
+      #profile-page .modal__content .diet-setting__body {
+        padding-bottom: 20px; }
+        #profile-page .modal__content .diet-setting__body p {
+          text-align: left;
+          color: #767676;
+          margin: 20px 40px; }
+      #profile-page .modal__content .diet-setting__footer {
+        width: 100%;
+        display: flex; }
+        #profile-page .modal__content .diet-setting__footer .button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 50%;
+          background-color: white;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+          height: 50px;
+          text-transform: uppercase;
+          font-size: 12px;
+          font-weight: bold; }
+          #profile-page .modal__content .diet-setting__footer .button:focus {
+            background-color: rgba(0, 0, 0, 0.15); }
+          #profile-page .modal__content .diet-setting__footer .button:nth-child(1) {
+            color: #767676; }
+          #profile-page .modal__content .diet-setting__footer .button:nth-child(2) {
+            color: #FFB554; }
