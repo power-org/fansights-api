@@ -14,7 +14,7 @@ router.get('/', (req, res)=>{
 });
 
 router.get('/:meal_id', (req, res)=>{
-  home.getMealDetails(req.params.meal_id).then(data=>{
+  home.getMealDetails(req.session.user.id, req.params.meal_id).then(data=>{
     res.status(200).json(data);
   }).catch(error=>{
     res.status(400).json({

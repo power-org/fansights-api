@@ -25,57 +25,24 @@ document.addEventListener('init', function(event) {
       .get(`/api/me/${id}`)
       .then(result => {
         foodInfo = result.data;
-        let contains = details.map(d => d.tag);
-        let td = '';
-        let calories = 0;
-        let fat = 0;
-        let carbs = 0;
-
-        foodInfo.forEach(fi => {
-          fi.forEach(nutrient => {
-            if (nutrient.tagname === 'ENERC_KCAL') {
-              calories += nutrient.nutr_val;
-            }
-            if (nutrient.tagname === 'FAT') {
-              fat += nutrient.nutr_val;
-            }
-            if (nutrient.tagname === 'CHOCDF') {
-              carbs += nutrient.nutr_val;
-            }
-          });
-        });
-
-        td += `
+        let contains = foodInfo.details.map(d => d.tag);
+        let td = foodInfo.nutrients.map(e=>{
+          return `
             <tr>
-              <td>Calories</td>
-              <td>kcal</td>
-              <td>${calories}</td>
-            </tr>
-            <tr>
-              <td>Fat</td>
-              <td>g</td>
-              <td>${fat}</td>
-            </tr>
-            <tr>
-              <td>Carbs</td>
-              <td>g</td>
-              <td>${carbs}</td>
+              <td>${e.nutr_desc}</td>
+              <td>${e.units}</td>
+              <td>${e.nutr_val.toFixed(2)}</td>
             </tr>
           `;
+        });
         document.querySelector('#fi-nutrients-table tbody').innerHTML = td;
 
-        page.querySelector('#fi-ingredients').innerHTML = getUniqueArray(
-          contains
-        );
-        const ingredients = foodInfo.map(data => data.tag);
-        const ingredientsUnique = ingredients.filter(
-          (item, index) => ingredients.indexOf(item) >= index
-        );
-        console.log(getUniqueArray(contains));
+        page.querySelector('#fi-ingredients').innerHTML = contains.join(',');
         hideLoading('food-info-modal');
       })
       .catch(err => {
         hideLoading('food-info-modal');
+        console.log(err);
         ons.notification.alert('Failed to get food information');
       });
   } else if (page.id === 'post-food-page') {
@@ -218,7 +185,7 @@ const initFoodPost = function() {
         photoViewer.onclick = function() {
           document.getElementById('ct-browse-file').click();
         }
-        
+
       };
 
       reader.readAsDataURL(input.files[0]);
