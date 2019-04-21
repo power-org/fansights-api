@@ -27,31 +27,41 @@ document.addEventListener('init', function(event) {
         foodInfo = result.data;
         let contains = details.map(d => d.tag);
         let td = '';
+        let calories = 0;
+        let fat = 0;
+        let carbs = 0;
 
-        contains.forEach(c => {
-          const nutrient = {};
-          let total = 0;
-
-          foodInfo.forEach((el, index) => {
-            const t = el[0].tag;
-            if (el[0].tag === c) {
-              total = el.reduce((curr, val) => {
-                if (val.units === 'kcal') {
-                  curr += val.nutr_val;
-                }
-                return curr;
-              }, 0);
+        foodInfo.forEach(fi => {
+          fi.forEach(nutrient => {
+            if (nutrient.tagname === 'ENERC_KCAL') {
+              calories += nutrient.nutr_val;
+            }
+            if (nutrient.tagname === 'FAT') {
+              fat += nutrient.nutr_val;
+            }
+            if (nutrient.tagname === 'CHOCDF') {
+              carbs += nutrient.nutr_val;
             }
           });
+        });
 
-          td += `
+        td += `
             <tr>
-              <td>${c}</td>
+              <td>Calories</td>
               <td>kcal</td>
-              <td>${total}</td>
+              <td>${calories}</td>
+            </tr>
+            <tr>
+              <td>Fat</td>
+              <td>g</td>
+              <td>${fat}</td>
+            </tr>
+            <tr>
+              <td>CARBS</td>
+              <td>g</td>
+              <td>${carbs}</td>
             </tr>
           `;
-        });
         document.querySelector('#fi-nutrients-table tbody').innerHTML = td;
 
         page.querySelector('#fi-ingredients').innerHTML = getUniqueArray(
@@ -377,16 +387,17 @@ const getUniqueArray = function(arr) {
   });
 };
 
-axios.interceptors.response.use(function (response) {
-  return response;
-}, function (error) {
-  if (401 === error.response.status) {
-      console.log('AAAAAAAAAAAAAAAAAA');
-      ons.notification.alert('Session expired')
-        .then(() => {
-          window.location.href = '/';
-        })
-  } else {
+axios.interceptors.response.use(
+  function(response) {
+    return response;
+  },
+  function(error) {
+    if (401 === error.response.status) {
+      ons.notification.alert('Session expired').then(() => {
+        window.location.href = '/';
+      });
+    } else {
       return Promise.reject(error);
+    }
   }
-});
+);
