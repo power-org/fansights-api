@@ -16,7 +16,7 @@ let products = {
         [payload]
       )
         .then(data => {
-          var grouped = data.groupBy(function(item) {
+          let grouped = data.groupBy(function(item) {
             return [item.name];
           });
           resolve(grouped);
@@ -77,7 +77,10 @@ let products = {
             WHERE md.mm_id IN (?)
             ORDER BY md.id, nrd.sr_order
             `, result.master).then(data=>{
-              callback(null, data);
+              let grouped = data.groupBy(function(item) {
+                return [item.tag];
+              });
+              callback(null, grouped);
             }).catch(error=>{
               callback(error)
             });

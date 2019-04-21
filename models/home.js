@@ -124,7 +124,10 @@ let home = {
         WHERE md.mm_id IN (?)
         ORDER BY md.id, nrd.sr_order
         `, meal_id).then(data=>{
-          resolve(data);
+          let grouped = data.groupBy(function(item) {
+            return [item.tag];
+          });
+          resolve(grouped);
         }).catch(error=>{
           reject(error);
         })
