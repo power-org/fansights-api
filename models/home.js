@@ -66,7 +66,7 @@ let home = {
               LEFT JOIN fd_group fdg ON fdg.code = fd.group_code
               LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
               LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
-              WHERE m.member_id = ? AND DATE(m.date_created) = DATE(NOW())
+              WHERE m.member_id = ? AND DATE(m.date_created) = DATE(NOW()) AND nd.nutr_no IN(208,268,203,204,205,291)
               GROUP BY nrd.units, nrd.tagname, nrd.nutr_desc, nrd.sr_order
               ORDER BY nrd.sr_order
             `, result.getProfile.id).then(data=>{
@@ -121,7 +121,7 @@ let home = {
         LEFT JOIN fd_group fdg ON fdg.code = fd.group_code
         LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
         LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
-        WHERE md.mm_id IN (?)
+        WHERE md.mm_id IN (?) AND nd.nutr_no IN(208,268,203,204,205,291)
         ORDER BY md.id, nrd.sr_order
         `, meal_id).then(data=>{
           let grouped = data.groupBy(function(item) {

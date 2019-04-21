@@ -9,7 +9,7 @@ let products = {
         SELECT fd.id, fd.ndb_no, t.name, fd.long_desc FROM food_des fd
         LEFT JOIN tags t ON fd.short_desc regexp t.name
         LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
-        WHERE t.name IN (?) AND nd.ndb_no is not null
+        WHERE t.name IN (?) AND nd.ndb_no is not null AND nd.nutr_no IN(208,268,203,204,205,291)
         GROUP BY fd.id, fd.ndb_no, t.name, fd.long_desc
         ORDER BY t.name
         `,
@@ -74,7 +74,7 @@ let products = {
             LEFT JOIN fd_group fdg ON fdg.code = fd.group_code
             LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
             LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
-            WHERE md.mm_id IN (?)
+            WHERE md.mm_id IN (?) AND nd.nutr_no IN(208,268,203,204,205,291)
             ORDER BY md.id, nrd.sr_order
             `, result.master).then(data=>{
               let grouped = data.groupBy(function(item) {
