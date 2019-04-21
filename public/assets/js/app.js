@@ -57,7 +57,7 @@ document.addEventListener('init', function(event) {
               <td>${fat}</td>
             </tr>
             <tr>
-              <td>CARBS</td>
+              <td>Carbs</td>
               <td>g</td>
               <td>${carbs}</td>
             </tr>
@@ -213,9 +213,12 @@ const initFoodPost = function() {
       var reader = new FileReader();
 
       reader.onload = function(e) {
-        document
-          .querySelector('#photo-viewer')
-          .setAttribute('src', e.target.result);
+        const photoViewer = document.querySelector('#photo-viewer');
+        photoViewer.setAttribute('src', e.target.result)
+        photoViewer.onclick = function() {
+          document.getElementById('ct-browse-file').click();
+        }
+        
       };
 
       reader.readAsDataURL(input.files[0]);
@@ -229,8 +232,9 @@ const initFoodPost = function() {
 
   const checkFile = function() {
     if (!browseFiles.value.length) {
-      const tabBar = document.querySelector('ons-tabbar');
-      console.log('TABBAR', ons);
+      // const tabBar = document.querySelector('ons-tabbar');
+      // document.getElementById('appNavigator').resetToPage('home-page');
+      console.log(document.getElementById('appNavigator'));
       // TODO: Return to tab 1
       //tabBar.setActive(0);
     }
