@@ -26,21 +26,16 @@ document.addEventListener('init', function(event) {
       .then(result => {
         foodInfo = result.data;
         let contains = details.map(d => d.tag);
-        // foodInfo.forEach(element => {
-        //   element.forEach(item => {
-        //     contains.push(item.tag);
-        //   })
-        // });
 
-        contains.forEach(c => {
-          const nutrient = {};
-          const total = foodInfo.reduce((curr, val) => {
-            curr += val.nutr_val;
-          }, 0);
-          nutrient = {
-            tag: c[0].tag
-          };
-        });
+        // contains.forEach(c => {
+        //   const nutrient = {};
+        //   const total = foodInfo.reduce((curr, val) => {
+        //     curr += val.nutr_val;
+        //   }, 0);
+        //   nutrient = {
+        //     tag: c[0].tag
+        //   };
+        // });
         page.querySelector('#fi-ingredients').innerHTML = getUniqueArray(
           contains
         );
