@@ -303,7 +303,7 @@ const analyzePhoto = function(photo) {
         postButton.setAttribute('modifier', 'large');
         postButton.innerHTML = 'Post this photo';
         postButton.onclick = function() {
-          // showLoading('loadin-modal');
+          showLoading('loading-modal');
           console.log(document.querySelectorAll('.class-tags'));
           let selectedTags = [];
           document.querySelectorAll('.class-tags').forEach(e => {
@@ -330,11 +330,11 @@ const analyzePhoto = function(photo) {
             .post('/api/upload/s3', formData)
             .then(result => {
               window.location.href = '/';
-              // hideLoading('loadin-modal');
             })
             .catch(err => {
-              // hideLoading('loadin-modal');
               ons.notification.alert('Failed to submit data');
+            }).finally(()=>{
+              hideLoading('loading-modal');
             });
 
           console.log('POSTING PHOTO...', formData);
