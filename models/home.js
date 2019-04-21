@@ -26,7 +26,24 @@ let home = {
               callback(error);
             });
           },
-          getMeals: ['getProfile', function(result, callback){
+          getTopTags: ['getProfile', function(result, callback){
+            Database.execute(`
+              SELECT
+                count(md.tag) count,
+                md.tag
+              FROM meal_master m
+              LEFT JOIN meal_details md ON md.mm_id = m.id
+              WHERE m.member_id = ? AND DATE(m.date_created) = DATE(NOW())
+              GROUP BY md.tag
+              ORDER BY count(md.tag) DESC
+              LIMIT 3
+            `, result.getProfile.id).then(data=>{
+              callback(null, data);
+            }).catch(error=>{
+              callback(error)
+            });
+          }],
+          getMeals: ['getTopTags', function(result, callback){
             Database.execute(`SELECT * FROM meal_master WHERE member_id = ? ORDER BY date_created`, result.getProfile.id).then(data=>{
               callback(null, data);
             }).catch(error=>{
@@ -92,6 +109,7 @@ let home = {
           }else{
             let profile = result.getProfile._deleteProps('password');
             profile.todayTotalMeals = result.getTotalMealsToday;
+            profile.topTagsToday = result.getTopTags;
             profile.meals = result.getMeals.map(e=>{
               e.details = result.getMealsDetails.filter(m=>m.mm_id === e.id);
               return e;
