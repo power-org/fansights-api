@@ -27,9 +27,9 @@
         <div>
           <div class="input-container">
             <label>Email</label>
-            <ons-input id="email" modifier="underbar" placeholder="May i know who you are?" float></ons-input>
+            <ons-input id="email" onkeypress="gotoPassword()" modifier="underbar" value="" placeholder="May i know who you are?" float></ons-input>
             <label>Password</label>
-            <ons-input id="password" modifier="underbar" type="password" placeholder="Don't worry, it'll be our secret"
+            <ons-input id="password" onkeypress="onsend()" modifier="underbar"  value="" type="password" placeholder="Don't worry, it'll be our secret"
               float></ons-input>
           </div>
           <div class="btn">
@@ -46,10 +46,9 @@
   <script>
     //axios.get('https://jsonplaceholder.typicode.com/posts')
     //    .then((data) => console.log(data));
-
     const lp_login = function () {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value.toLowerCase().trim();
+      const password = document.getElementById('password').value.toLowerCase().trim();
 
       axios.post('/login', { email, password })
         .then(result => {
@@ -62,6 +61,16 @@
 
     const lp_signup = function () {
       window.location.href = " /signup";
+    }
+
+    const onsend = function(){
+      if(event.key.toLowerCase() === 'enter') lp_login();
+    }
+    const gotoPassword = function(){
+      if(event.key.toLowerCase() === 'enter'){
+        console.log(event.key);
+        document.getElementById('password').focus();
+      }
     }
 
       /** const lp_signup = function() {
