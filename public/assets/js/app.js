@@ -92,7 +92,7 @@ const loadHomeInfo = async function() {
 
       // The data for our dataset
       data: {
-        labels: ['Zark\'s', 'Chettos', 'Hotdoggu'],
+        labels: window.USER.topTags.map(e=>e.tag),
         datasets: [
           {
             label: 'My Foods',
@@ -106,7 +106,7 @@ const loadHomeInfo = async function() {
               'rgb(255, 99, 66)',
               'rgb(255, 99, 198)'
             ],
-            data: [1, 1, 1]
+            data: window.USER.topTags.map(e=>e.count)
           }
         ]
       },
