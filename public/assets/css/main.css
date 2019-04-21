@@ -14,7 +14,7 @@ body {
   .logo img {
     height: 150px; }
 
-.toolbar img {
+.toolbar img, .toolbar span {
   margin: 0 10px; }
 
 .max-height {
