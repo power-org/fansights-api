@@ -61,7 +61,7 @@ let products = {
           if (err) {
             reject(err);
           } else {
-            resolve(result.getDetails);
+            resolve(result);
           }
         }
       );
