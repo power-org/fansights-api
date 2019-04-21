@@ -74,7 +74,7 @@ let products = {
             LEFT JOIN fd_group fdg ON fdg.code = fd.group_code
             LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
             LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
-            WHERE md.id IN (?)
+            WHERE md.mm_id IN (?)
             ORDER BY md.id, nrd.sr_order
             `, result.master).then(data=>{
               callback(null, data);
