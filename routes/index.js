@@ -7,13 +7,23 @@ const signup = require('../models/signup');
 
 const { PowerSchema } = require('../helper/SchemaChecker');
 const schemas = require('./schemas');
+const home = require('../models/home');
 
 router.get('/', mw.isAuth, (req, res)=>{
-    res.render('index');
+    let homeData = req.session.user;
+    home.getProfileDetails(req.session.user).then(data=>{
+      homeData.meals = data.meals;
+    }).catch(error=>{
+      console.error('[Render][ME]', error);
+      homeData.meals = [];
+    }).finally(()=>{
+      res.render('index', {data: homeData});
+    })
 });
 
 router.use('/api/upload', require('./upload'));
 router.use('/api/github', require('./github-webook'));
+router.use('/api/me', mw.isAuthAPI, require('./home'));
 
 router.get('/login', mw.hasSession, (req, res)=>{
     res.render('login');
@@ -22,7 +32,7 @@ router.get('/login', mw.hasSession, (req, res)=>{
 router.post('/login', mw.isAfterAuthAPI, PowerSchema().setSchema(schemas.LOGIN).scan, (req, res)=>{
     login.siginIn(req.body).then(data=>{
         console.log('[LOGIN] - Success', data);
-        req.session.user = data;
+        req.session.user = data._deleteProps('password');
         res.status(200).json({
             message: 'Success'
         });

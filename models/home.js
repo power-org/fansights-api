@@ -11,24 +11,38 @@ ORDER BY fd.ndb_no
 
 let home = {
     getProfileDetails: (user) => {
-        return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
+        async.auto({
+          getProfile: function(callback){
             Database.execute('SELECT * FROM members WHERE id = ?', user.id).then(data=>{
                 if(data.length > 0){
-                    resolve(data[0]);
+                    callback(null, data[0]);
                 }else{
-                    reject({
+                    callback({
                         message: 'No record found'
                     });
                 }
             }).catch(error=>{
-                reject(error);
+              callback(error);
             });
+          },
+          getMeals: ['getProfile', function(result, callback){
+            Database.execute(`SELECT * FROM meal_master WHERE member_id = ? ORDER BY date_created`, result.getProfile.id).then(data=>{
+              callback(null, data);
+            }).catch(error=>{
+              callback(error)
+            });
+          }]
+        }, function(err, result){
+          if(err){
+            reject(err);
+          }else{
+            let profile = result.getProfile._deleteProps('password');
+            profile.meals = result.getMeals;
+            resolve(profile);
+          }
         });
-    },
-    createHeavyMeal: (payload)=>{
-        return new Promise((resolve, reject)=>{
-
-        });
+      });
     }
 };
 
