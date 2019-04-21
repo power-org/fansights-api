@@ -376,3 +376,17 @@ const getUniqueArray = function(arr) {
     return arr.indexOf(item) >= index;
   });
 };
+
+axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if (401 === error.response.status) {
+      console.log('AAAAAAAAAAAAAAAAAA');
+      ons.notification.alert('Session expired')
+        .then(() => {
+          window.location.href = '/';
+        })
+  } else {
+      return Promise.reject(error);
+  }
+});
