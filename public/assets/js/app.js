@@ -329,6 +329,7 @@ const analyzePhoto = function(photo) {
           axios
             .post('/api/upload/s3', formData)
             .then(result => {
+              window.location.href = '/';
               // hideLoading('loadin-modal');
             })
             .catch(err => {
