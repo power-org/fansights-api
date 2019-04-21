@@ -55,16 +55,39 @@ let products = {
             }).catch(error=>{
               callback(error)
             });
+          }],
+          getDetails: ['details', function(result, callback){
+            Database.execute(`
+            SELECT
+              md.id,
+              md.tag,
+              md.mm_id,
+              fd.id as products_id, fd.ndb_no, fd.long_desc,
+              nd.nutr_val,
+              nrd.units,
+              nrd.tagname,
+              nrd.nutr_desc,
+              nrd.num_dec,
+              nrd.sr_order
+            FROM meal_details md
+            LEFT JOIN food_des fd ON fd.id = md.products_id
+            LEFT JOIN fd_group fdg ON fdg.code = fd.group_code
+            LEFT JOIN nut_data nd ON nd.ndb_no = fd.ndb_no
+            LEFT JOIN nutr_def nrd ON nrd.nutr_no = nd.nutr_no
+            WHERE md.id IN (?)
+            ORDER BY md.id, nrd.sr_order
+            `, result.master).then(data=>{
+              callback(null, data);
+            }).catch(error=>{
+              callback(error)
+            });
           }]
         },
         function(err, result) {
           if (err) {
             reject(err);
           } else {
-            resolve({
-              master: result.master,
-              details: result.details
-            });
+            resolve(result.getDetails);
           }
         }
       );
