@@ -9,13 +9,52 @@ ons.platform.select('ios');
 document.addEventListener('init', function(event) {
   const page = event.target;
   if (page.id === 'food-info') {
-    fakeLoading('food-info-modal');
+    showLoading('food-info-modal');
     console.log(page.data);
-    const { id, name, description, img } = page.data;
-    page.querySelector('ons-toolbar .center').innerHTML = page.data.name;
-    page.querySelector('#fi-img').src = img;
-    page.querySelector('#fi-title').innerHTML = name;
-    page.querySelector('#fi-subtitle').innerHTML = description;
+    const { id, caption, picture, details } = page.data;
+    let foodInfo = [];
+    page.querySelector('ons-toolbar .center').innerHTML = page.data.caption;
+    page.querySelector('#fi-img').src = picture;
+    page.querySelector('#fi-title').innerHTML = caption;
+    page.querySelector('#fi-subtitle').innerHTML = page.data.details.reduce(
+      (curr, d) => (curr += d.long_desc),
+      ''
+    );
+
+    axios
+      .get(`/api/me/${id}`)
+      .then(result => {
+        foodInfo = result.data;
+        let contains = details.map(d => d.tag);
+        // foodInfo.forEach(element => {
+        //   element.forEach(item => {
+        //     contains.push(item.tag);
+        //   })
+        // });
+
+        contains.forEach(c => {
+          const nutrient = {};
+          const total = foodInfo.reduce((curr, val) => {
+            curr += val.nutr_val;
+          }, 0);
+          nutrient = {
+            tag: c[0].tag
+          };
+        });
+        page.querySelector('#fi-ingredients').innerHTML = getUniqueArray(
+          contains
+        );
+        const ingredients = foodInfo.map(data => data.tag);
+        const ingredientsUnique = ingredients.filter(
+          (item, index) => ingredients.indexOf(item) >= index
+        );
+        console.log(getUniqueArray(contains));
+        hideLoading('food-info-modal');
+      })
+      .catch(err => {
+        hideLoading('food-info-modal');
+        ons.notification.alert('Failed to get food information');
+      });
   } else if (page.id === 'post-food-page') {
     console.log(page.data);
   }
@@ -27,131 +66,21 @@ document.addEventListener('init', function(event) {
 
 document.addEventListener('prechange', function(event) {
   if (event.activeIndex === 1) {
-    document.getElementById('ct-browse-file').click();
-
-    /**
-     *   Listen to local file browsing
-     */
-    const browseFiles = document.getElementById('ct-browse-file');
-    browseFiles.addEventListener('change', e => {
-      const selectedImg = e.target.files[0];
-      const input = e.target;
-
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function(e) {
-          document
-            .querySelector('#photo-viewer')
-            .setAttribute('src', e.target.result);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-      }
-
-      submitPhoto(selectedImg);
-    });
-
-    browseFiles.onclick = function() {
-      document.body.onfocus = checkFile();
-    };
-
-    const checkFile = function() {
-      if (!browseFiles.value.length) {
-        const tabBar = document.querySelector('ons-tabbar');
-        console.log('TABBAR', ons);
-        // TODO: Return to tab
-        //tabBar.setActive(0);
-      }
-      document.body.onfocus = null;
-    };
-
-    const tags = [
-      [
-        {
-          id: 1,
-          name: 'cheese',
-          long_desc: 'This is a cheese 1'
-        },
-        {
-          id: 2,
-          name: 'cheese',
-          long_desc: 'This is a cheese 2'
-        }
-      ],
-      [
-        {
-          id: 3,
-          name: 'bun',
-          long_desc: 'This is a bun 1'
-        },
-        {
-          id: 4,
-          name: 'bun',
-          long_desc: 'This is a bun 2'
-        }
-      ],
-      [
-        {
-          id: 5,
-          name: 'lettuce',
-          long_desc: 'This is a lettuce 1'
-        },
-        {
-          id: 6,
-          name: 'lettuce',
-          long_desc: 'This is a lettuce 2'
-        }
-      ]
-    ];
-
-    // const onsSelect = document.createElement('ons-select');
-    // onsSelect.setAttribute('id', 1);
-    const os = document.querySelector('ons-select');
-    console.log('os', os);
-    if (document.contains(os)) {
-      os.remove();
-      // document.querySelectorAll('.someselector').forEach(el => el.remove());
-    } else {
-      tags.forEach((groups, index) => {
-        console.log('GROUPS', groups);
-        let onsSelect = document.createElement('ons-select');
-        onsSelect.setAttribute('id', `tag-list-item-${index + 1}`);
-  
-        let onsSelectListItem = '';
-        groups.forEach(tag => {
-          onsSelectListItem += `<option value="${tag.id}">${tag.name} - ${tag.long_desc}</option>`;
-          onsSelect.innerHTML = onsSelectListItem;
-        });
-        onsSelectListItem = '';
-        document.querySelector('#select-tags').appendChild(onsSelect);
-        
-        const removeTag = document.createElement('span');
-        removeTag.setAttribute('id', `tag=remove-${index + 1}`);
-        removeTag.addEventListener('click', (e) => {
-          e.target.parentElement.removeChild(document.getElementById(`tag-list-item-${index + 1}`));
-          document.getElementById(`tag=remove-${index + 1}`).remove();
-        });
-        removeTag.innerHTML = 'Remove'
-        document.querySelector('#select-tags').appendChild(removeTag);
-  
-      });
-    }
+    initFoodPost();
+  } else if (event.activeIndex === 2) {
+    loadProfileInfo();
   }
 });
 
 const editSelects = function(event) {
   document.getElementById('choose-sel').removeAttribute('modifier');
-  if (
-    event.target.value == 'material' ||
-    event.target.value == 'underbar'
-  ) {
+  if (event.target.value == 'material' || event.target.value == 'underbar') {
     console.log(event);
     document
       .getElementById('choose-sel')
       .setAttribute('modifier', event.target.value);
   }
-}
+};
 
 /**
  * Statistics and Foods Service
@@ -200,57 +129,7 @@ const loadHomeInfo = async function() {
       }
     });
 
-    const foods = [
-      {
-        id: 1,
-        name: 'Bacon',
-        description:
-          'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-        img:
-          'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-      },
-      {
-        id: 2,
-        name: 'Hotdog',
-        description:
-          'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-        img:
-          'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-      },
-      {
-        id: 1,
-        name: 'Bacon',
-        description:
-          'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-        img:
-          'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-      },
-      {
-        id: 2,
-        name: 'Hotdog',
-        description:
-          'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-        img:
-          'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-      },
-      {
-        id: 1,
-        name: 'Bacon',
-        description:
-          'Bacon is a type of salt-cured pork. Bacon is prepared from several different cuts of meat, typically from the pork belly or from back cuts, which have...',
-        img:
-          'https://thebakermama.com/wp-content/uploads/2018/08/fullsizeoutput_15a7c.jpg'
-      },
-      {
-        id: 2,
-        name: 'Hotdog',
-        description:
-          'The hot dog or dog is a grilled or steamed link-sausage sandwich where the sausage is served in the slit of a partially sliced hot dog bun, a bun of...',
-        img:
-          'https://5i0b63wqszy3rogfx27pxco1-wpengine.netdna-ssl.com/wp-content/uploads/Basic-Hot-Dogs2-600x500.jpg'
-      }
-    ];
-
+    const foods = window.USER.meals;
     /**
      *   Push to another page on item click
      */
@@ -270,12 +149,15 @@ const loadHomeInfo = async function() {
       onsListItem.addEventListener('click', () => handleItemClick(food.id));
       onsListItem.innerHTML = `
         <div class="left">
-            <img class="list-item__thumbnail" src="${food.img}">
+            <img class="list-item__thumbnail" src="${food.picture}">
         </div>
         <div class="center">
             <span class="list-item__title">${
-              food.name
-            }</span><span class="list-item__subtitle">${food.description}</span>
+              food.caption
+            }</span><span class="list-item__subtitle">${food.details.reduce(
+        (curr, d) => (curr += d.long_desc),
+        ''
+      )}</span>
         </div>
     `;
       return onsListItem;
@@ -291,20 +173,168 @@ const loadHomeInfo = async function() {
 };
 
 /**
- * Upload selected photo service
+ * Initialize file upload and preset data
  */
-const submitPhoto = function(photo) {
-  fakeLoading('loading-modal');
-  const formData = new FormData();
-  formData.append('photo', photo);
-  console.log('FORM DATA', formData.get('photo'));
-  // const nav = document.getElementById('appNavigator');
-  // nav.pushPage('food-post.html', { data: photo });
+const initFoodPost = function() {
+  document.getElementById('ct-browse-file').click();
 
-  // axios
-  //   .post('/url', formData)
-  //   .then(result => {})
-  //   .catch(err => {});
+  /**
+   *   Listen to local file browsing
+   */
+  const browseFiles = document.getElementById('ct-browse-file');
+  browseFiles.addEventListener('change', e => {
+    const selectedImg = e.target.files[0];
+    const input = e.target;
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        document
+          .querySelector('#photo-viewer')
+          .setAttribute('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+      analyzePhoto(selectedImg);
+    }
+  });
+
+  browseFiles.onclick = function() {
+    document.body.onfocus = checkFile();
+  };
+
+  const checkFile = function() {
+    if (!browseFiles.value.length) {
+      const tabBar = document.querySelector('ons-tabbar');
+      console.log('TABBAR', ons);
+      // TODO: Return to tab 1
+      //tabBar.setActive(0);
+    }
+    document.body.onfocus = null;
+  };
+};
+
+/**
+ * Load profile information
+ */
+const loadProfileInfo = function() {
+  console.log('LOADING PROFILE');
+  document.querySelector('#pp-name').innerText = window.USER.name;
+  document.querySelector('#pp-email').innerText = window.USER.email;
+  document.querySelector('#pp-profile').src = window.USER.profile;
+  const dsHeavyMeal = document.getElementById('pp-heavy-meal');
+  const dsSnackMeal = document.getElementById('pp-snack-meal');
+
+  dsHeavyMeal.addEventListener('onchange', e => {
+    console.log('heavy', e.target.value);
+  });
+
+  dsSnackMeal.addEventListener('onchange', e => {
+    console.log('snack', e.target.value);
+  });
+};
+
+/**
+ * Analyze selected photo service
+ */
+const analyzePhoto = function(photo) {
+  let type = '';
+  ons
+    .openActionSheet({
+      title: 'Choose from food type',
+      cancelable: true,
+      buttons: [
+        'Meal',
+        'Snack',
+        {
+          label: 'Cancel',
+          icon: 'md-close'
+        }
+      ]
+    })
+    .then(function(index) {
+      if (index === 0) type = 'real_food';
+      else if (index === 1) type = 'junk_food';
+      else document.getElementById('ct-browse-file').click();
+
+      showLoading('loading-modal');
+      const formData = new FormData();
+      formData.append(type, photo);
+      axios
+        .post('/api/upload', formData)
+        .then(result => {
+          console.log(result);
+          const tags = result.data;
+
+          // const onsSelect = document.createElement('ons-select');
+          // onsSelect.setAttribute('id', 1);
+          const os = document.querySelector('ons-select');
+          console.log('os', os);
+          if (document.contains(os)) {
+            os.remove();
+            // document.querySelectorAll('.someselector').forEach(el => el.remove());
+          } else {
+            tags.forEach((groups, index) => {
+              console.log('GROUPS', groups);
+              let onsSelect = document.createElement('ons-select');
+              onsSelect.setAttribute('id', `tag-list-item-${index + 1}`);
+
+              let onsSelectListItem = '';
+              groups.forEach(tag => {
+                onsSelectListItem += `<option value="${tag.id}">${tag.name} - ${
+                  tag.long_desc
+                }</option>`;
+                onsSelect.innerHTML = onsSelectListItem;
+              });
+              onsSelectListItem = '';
+              document.querySelector('#select-tags').appendChild(onsSelect);
+
+              const removeTag = document.createElement('span');
+              removeTag.setAttribute('id', `tag=remove-${index + 1}`);
+              removeTag.addEventListener('click', e => {
+                e.target.parentElement.removeChild(
+                  document.getElementById(`tag-list-item-${index + 1}`)
+                );
+                document.getElementById(`tag=remove-${index + 1}`).remove();
+              });
+              removeTag.innerHTML = 'Remove';
+              document.querySelector('#select-tags').appendChild(removeTag);
+            });
+
+            const postButton = document.createElement('ons-button');
+            postButton.setAttribute('modifier', 'large');
+            postButton.innerHTML = 'Post this photo';
+            postButton.onclick = function() {
+              const caption = document.querySelector('#ct-caption').value;
+              const customTags = document.querySelector('#ct-tags').value;
+              formData.append('caption', caption);
+              formData.append('tag', customTags);
+
+              // formData.append('caption', tags);
+              console.log('POSTING PHOTO...', caption);
+            };
+            document.querySelector('#select-tags').append(postButton);
+          }
+          hideLoading('loading-modal');
+        })
+        .catch(err => {
+          hideLoading('loading-modal');
+          ons.notification.alert('Error analyzing photo');
+        });
+    });
+};
+
+const openDietSettings = function() {
+  showLoading('pp-diet-settings-modal');
+};
+
+const closeDietSettings = function() {
+  hideLoading('pp-diet-settings-modal');
+};
+
+const saveDietSettings = function() {
+  console.log('Saving diet settings..');
 };
 
 /**
@@ -326,4 +356,10 @@ const fakeLoading = function(modal) {
   setTimeout(function() {
     hideLoading(modal);
   }, 100);
+};
+
+const getUniqueArray = function(arr) {
+  return arr.filter(function(item, index) {
+    return arr.indexOf(item) >= index;
+  });
 };

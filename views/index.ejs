@@ -130,9 +130,8 @@
             <div class="food-trivia">
                 <p class="ingredients">
                     <b>Ingredients</b>
-                    FILLING: CABBAGE, CRAB, CRAB FLAKES [SURIMI (FISH PASTE OF POLLOCK, AND/OR GOLDEN THREADFIN BREAM),
-                    WATER, WHEAT STARCH, KONJAC FLOUR
-                    <a href="#"> See more . . . </a>
+                    <span id="fi-ingredients"></span>
+                    <%# <a href="#"> See more . . . </a> %>
                 </p>
                 <table cellpadding="0" cellspacing="0">
                     <thead>
@@ -177,10 +176,6 @@
                     </p>
                 </div>
             </ons-modal>
-
-            <script>
-                console.log(document.getElementById('appNavigator'));
-            </script>
         </ons-page>
     </template>
 
@@ -193,16 +188,12 @@
             <input id="ct-browse-file" type="file" accept="image/*" hidden>
             <input id="ct-camera" type="file" accept="image/*" capture="user" hidden>
 
-            <label>Caption</label>
-            <ons-input id="ct-caption" modifier="underbar" placeholder="Caption" float></ons-input>
             <img id="photo-viewer" height="200px">
-            <h3>Tags</h3>
-            <%# <ons-select id="choose-sel" onchange="editSelects(event)">
-                <option value="basic">Basic</option>
-                <option value="material">Material</option>
-                <option value="underbar">Underbar</option>
-            </ons-select> %>
-
+            <label>Caption</label>
+            <ons-input id="ct-caption" modifier="underbar" placeholder="Add a short caption for this photo" float></ons-input>
+            <label>Tags</label>
+            <ons-input id="ct-tags" modifier="underbar" placeholder="Add tags to this photo. (ex. burger, yummy, sandwich)" float></ons-input>
+            <h4>Detected Tags</h4>
             <%# NOTE: DONT REMOVE THIS. THIS RENDERS ALL SELECTED TAGS %>
             <div id="select-tags"></div>
         </ons-page>
@@ -215,13 +206,13 @@
             </ons-toolbar>
             <div class="profile">
                 <div class="profile__img">
-                    <img src="https://tinyfac.es/data/avatars/475605E3-69C5-4D2B-8727-61B7BB8C4699-500w.jpeg" />
+                    <img id="pp-profile" src="https://tinyfac.es/data/avatars/475605E3-69C5-4D2B-8727-61B7BB8C4699-500w.jpeg" />
                 </div>
                 <div class="profile__info">
-                    <p class="name">
+                    <p id="pp-name" class="name">
                         Saito Hiraga
                     </p>
-                    <p class="email">
+                    <p id="pp-email" class="email">
                         saito_hiraga@gmail.com
                     </p>
                     <div class="goals">
@@ -263,7 +254,7 @@
 
             <ons-list style="margin-top: 30px; background: transparent">
                 <ons-list-header style="margin-top: 10px;">Settings</ons-list-header>
-                <ons-list-item>
+                <ons-list-item onclick="openDietSettings()">
                     <div class="center">
                         <span id="fi-title" class="list-item__title">Diet Settings</span>
                         <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
@@ -277,14 +268,18 @@
                             while important for establishing efficacy</span>
                     </div>
                 </ons-list-item>
-                <ons-list-item>
-                    <div class="center">
-                        <span id="fi-title" class="list-item__title">My</span>
-                        <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
-                            while important for establishing efficacy</span>
-                    </div>
-                </ons-list-item>
             </ons-list>
+
+            <ons-modal id="pp-diet-settings-modal" direction="up">
+                <div style="text-align: center">
+                    <p>Number of Heavy Meal</p>
+                    <input id="pp-heavy-meal" type="range" min="1" max="20">
+                    <p>Number of Snack Meal</p>
+                    <input id="pp-snack-meal" type="range" min="1" max="20">
+                    <ons-button onclick="saveDietSettings()">Save Settings</ons-button>
+                    <ons-button onclick="closeDietSettings()">Cancel</ons-button>
+                </div>
+            </ons-modal>
         </ons-page>
     </template>
 
