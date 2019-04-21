@@ -26,16 +26,34 @@ document.addEventListener('init', function(event) {
       .then(result => {
         foodInfo = result.data;
         let contains = details.map(d => d.tag);
+        let td = '';
 
-        // contains.forEach(c => {
-        //   const nutrient = {};
-        //   const total = foodInfo.reduce((curr, val) => {
-        //     curr += val.nutr_val;
-        //   }, 0);
-        //   nutrient = {
-        //     tag: c[0].tag
-        //   };
-        // });
+        contains.forEach(c => {
+          const nutrient = {};
+          let total = 0;
+
+          foodInfo.forEach((el, index) => {
+            const t = el[0].tag;
+            if (el[0].tag === c) {
+              total = el.reduce((curr, val) => {
+                if (val.units === 'kcal') {
+                  curr += val.nutr_val;
+                }
+                return curr;
+              }, 0);
+            }
+          });
+
+          td += `
+            <tr>
+              <td>${c}</td>
+              <td>kcal</td>
+              <td>${total}</td>
+            </tr>
+          `;
+        });
+        document.querySelector('#fi-nutrients-table tbody').innerHTML = td;
+
         page.querySelector('#fi-ingredients').innerHTML = getUniqueArray(
           contains
         );
@@ -358,3 +376,17 @@ const getUniqueArray = function(arr) {
     return arr.indexOf(item) >= index;
   });
 };
+
+axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if (401 === error.response.status) {
+      console.log('AAAAAAAAAAAAAAAAAA');
+      ons.notification.alert('Session expired')
+        .then(() => {
+          window.location.href = '/';
+        })
+  } else {
+      return Promise.reject(error);
+  }
+});
