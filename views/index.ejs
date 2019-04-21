@@ -247,22 +247,24 @@
                 <ons-list-header style="margin-top: 10px;">Settings</ons-list-header>
                 <ons-list-item onclick="openDietSettings()">
                     <div class="center">
-                        <span id="fi-title" class="list-item__title">Diet Settings</span>
+                        <span id="fi-title" class="list-item__title"><span class="fa fa-edit"></span> Diet Settings</span>
                         <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
                             while important for establishing efficacy</span>
                     </div>
                 </ons-list-item>
                 <ons-list-item>
                     <div class="center">
-                        <span id="fi-title" class="list-item__title">Change Password</span>
+                        <span id="fi-title" class="list-item__title"><span class="fa fa-lock"></span> Change Password</span>
                         <span id="fi-subtitle" class="list-item__subtitle">The diets used in these research studies,
                             while important for establishing efficacy</span>
                     </div>
                 </ons-list-item>
                 <ons-list-item>
                     <div class="center">
-                        <span id="fi-title" class="list-item__title">Logout</span>
-                        <span id="fi-subtitle" class="list-item__subtitle">Click <a href="/logout">here</a> to logout your account.</span>
+                        <span id="fi-title" class="list-item__title"><span class="fa fa-cog"></span> Logout</span>
+                            <span id="fi-subtitle" class="list-item__subtitle" onclick="window.location.href='/logout';">
+                                Click here to logout your account.
+                            </span>
                     </div>
                 </ons-list-item>
             </ons-list>
