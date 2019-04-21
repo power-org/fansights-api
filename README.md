@@ -84,6 +84,10 @@ npm start #or
 npm run dev
 
 # Running in prod
+# Note: running in prod requires you to have `pm2`
+# If you dont have `pm2` installed. Try running 
+# `npm install -g pm2`
+# before running the command below
 npm run prod
 ```
 
