@@ -26,12 +26,12 @@ document.addEventListener('init', function(event) {
       .then(result => {
         foodInfo = result.data;
         let contains = foodInfo.details.map(d => d.tag);
-        let td = foodInfo.nutrients.map(e=>{
+        let td = foodInfo.nutrients.map(e => {
           return `
             <tr>
-              <td>${e.nutr_desc}</td>
+              <td style="text-align: left;">${e.nutr_desc}</td>
               <td>${e.units}</td>
-              <td>${e.nutr_val.toFixed(2)}</td>
+              <td style="text-align: right;">${e.nutr_val.toFixed(2)}</td>
             </tr>
           `;
         });
@@ -55,7 +55,11 @@ document.addEventListener('init', function(event) {
  */
 
 document.addEventListener('prechange', function(event) {
-  if (event.activeIndex === 1) {
+  if (event.activeIndex === 0) {
+    console.log('HOME TAB');
+    const os = document.querySelector('ons-select');
+    if (document.contains(os)) os.remove();
+  } else if (event.activeIndex === 1) {
     initFoodPost();
   } else if (event.activeIndex === 2) {
     loadProfileInfo();
@@ -63,13 +67,14 @@ document.addEventListener('prechange', function(event) {
 });
 
 const editSelects = function(event) {
-  document.getElementById('choose-sel').removeAttribute('modifier');
-  if (event.target.value == 'material' || event.target.value == 'underbar') {
-    console.log(event);
-    document
-      .getElementById('choose-sel')
-      .setAttribute('modifier', event.target.value);
-  }
+  console.log('SELECT', event);
+  // document.getElementById('choose-sel').removeAttribute('modifier');
+  // if (event.target.value == 'material' || event.target.value == 'underbar') {
+  //   console.log(event);
+  //   document
+  //     .getElementById('choose-sel')
+  //     .setAttribute('modifier', event.target.value);
+  // }
 };
 
 /**
@@ -87,7 +92,7 @@ const loadHomeInfo = async function() {
 
       // The data for our dataset
       data: {
-        labels: window.USER.topTagsToday.map(e=>e.tag),
+        labels: ['Zark\'s', 'Chettos', 'Hotdoggu'],
         datasets: [
           {
             label: 'My Foods',
@@ -101,7 +106,7 @@ const loadHomeInfo = async function() {
               'rgb(255, 99, 66)',
               'rgb(255, 99, 198)'
             ],
-            data: window.USER.topTagsToday.map(e=>e.count)
+            data: [1, 1, 1]
           }
         ]
       },
@@ -173,19 +178,21 @@ const initFoodPost = function() {
    */
   const browseFiles = document.getElementById('ct-browse-file');
   browseFiles.addEventListener('change', e => {
+    e.stopImmediatePropagation();
     const selectedImg = e.target.files[0];
     const input = e.target;
+
+    console.log('IMAGE CHANGEEEEEED!!!!');
 
     if (input.files && input.files[0]) {
       var reader = new FileReader();
 
       reader.onload = function(e) {
         const photoViewer = document.querySelector('#photo-viewer');
-        photoViewer.setAttribute('src', e.target.result)
+        photoViewer.setAttribute('src', e.target.result);
         photoViewer.onclick = function() {
           document.getElementById('ct-browse-file').click();
-        }
-
+        };
       };
 
       reader.readAsDataURL(input.files[0]);
@@ -218,104 +225,126 @@ const loadProfileInfo = function() {
   document.querySelector('#pp-email').innerText = window.USER.email;
   document.querySelector('#pp-profile').src = window.USER.profile;
   const dsHeavyMeal = document.getElementById('pp-heavy-meal');
-  const dsSnackMeal = document.getElementById('pp-snack-meal');
+  const dsHeavyMealCaption = document.getElementById('pp-heavy-meal-caption');
+  // const dsSnackMeal = document.getElementById('pp-snack-meal');
+  document.getElementById('pp-my-diet').innerHTML = `${window.USER.todayDiet[0].nutr_val} kcal / ${window.USER.r_calorie_count} kcal`
+  dsHeavyMealCaption.innerText = window.USER.r_calorie_count;
 
   dsHeavyMeal.addEventListener('onchange', e => {
     console.log('heavy', e.target.value);
   });
 
-  dsSnackMeal.addEventListener('onchange', e => {
-    console.log('snack', e.target.value);
-  });
+  // dsSnackMeal.addEventListener('onchange', e => {
+  //   console.log('snack', e.target.value);
+  // });
 };
 
 /**
  * Analyze selected photo service
  */
+let selectedTags = [];
 const analyzePhoto = function(photo) {
-  let type = '';
-  ons
-    .openActionSheet({
-      title: 'Choose from food type',
-      cancelable: true,
-      buttons: [
-        'Meal',
-        'Snack',
-        {
-          label: 'Cancel',
-          icon: 'md-close'
-        }
-      ]
-    })
-    .then(function(index) {
-      if (index === 0) type = 'real_food';
-      else if (index === 1) type = 'junk_food';
-      else document.getElementById('ct-browse-file').click();
+  let type = 'real_food';
+  // if (index === 0) type = 'real_food';
+  // else if (index === 1) type = 'junk_food';
+  // else document.getElementById('ct-browse-file').click();
 
-      showLoading('loading-modal');
-      const formData = new FormData();
-      formData.append(type, photo);
-      axios
-        .post('/api/upload', formData)
-        .then(result => {
-          console.log(result);
-          const tags = result.data;
+  showLoading('loading-modal');
+  let formData = new FormData();
+  formData.append(type, photo);
+  axios
+    .post('/api/upload', formData)
+    .then(result => {
+      console.log(result);
+      const tags = result.data;
 
-          // const onsSelect = document.createElement('ons-select');
-          // onsSelect.setAttribute('id', 1);
-          const os = document.querySelector('ons-select');
-          console.log('os', os);
-          if (document.contains(os)) {
-            os.remove();
-            // document.querySelectorAll('.someselector').forEach(el => el.remove());
-          } else {
-            tags.forEach((groups, index) => {
-              console.log('GROUPS', groups);
-              let onsSelect = document.createElement('ons-select');
-              onsSelect.setAttribute('id', `tag-list-item-${index + 1}`);
+      // const onsSelect = document.createElement('ons-select');
+      // onsSelect.setAttribute('id', 1);
+      const os = document.querySelector('ons-select');
+      console.log('os', os);
+      if (document.contains(os)) {
+        os.remove();
+        // document.querySelectorAll('.someselector').forEach(el => el.remove());
+      } else {
+        tags.forEach((groups, index) => {
+          console.log('GROUPS', groups);
+          let onsSelect = document.createElement('ons-select');
+          onsSelect.setAttribute('style', 'flex: 2 0 0;');
+          let onsSelectListItem = '';
+          groups.forEach(tag => {
+            onsSelectListItem += `<option value='${JSON.stringify(tag)}'>${
+              tag.name
+            } - ${tag.long_desc}</option>`;
+            onsSelect.innerHTML = onsSelectListItem;
+          });
 
-              let onsSelectListItem = '';
-              groups.forEach(tag => {
-                onsSelectListItem += `<option value="${tag.id}">${tag.name} - ${
-                  tag.long_desc
-                }</option>`;
-                onsSelect.innerHTML = onsSelectListItem;
-              });
-              onsSelectListItem = '';
-              document.querySelector('#select-tags').appendChild(onsSelect);
+          const removeTag = document.createElement('ons-button');
+          removeTag.setAttribute('modifier', 'quiet');
+          removeTag.setAttribute('style', 'margin-top: -6px');
+          removeTag.setAttribute('id', `tag=remove-${index + 1}`);
+          removeTag.addEventListener('click', e => {
+            e.target.parentElement.parentElement.remove();
+          });
+          removeTag.innerHTML = "<ons-icon icon='fa-trash' style='font-size: 14px;'></ons-icon>";
+          let div = document.createElement('div');
+          div.setAttribute('class', 'class-tags');
+          //add select here
+          div.appendChild(onsSelect);
 
-              const removeTag = document.createElement('span');
-              removeTag.setAttribute('id', `tag=remove-${index + 1}`);
-              removeTag.addEventListener('click', e => {
-                e.target.parentElement.removeChild(
-                  document.getElementById(`tag-list-item-${index + 1}`)
-                );
-                document.getElementById(`tag=remove-${index + 1}`).remove();
-              });
-              removeTag.innerHTML = 'Remove';
-              document.querySelector('#select-tags').appendChild(removeTag);
+          //add remove here
+          div.appendChild(removeTag);
+          document.querySelector('#select-tags').appendChild(div);
+        });
+
+        /**
+         * POST BUTTON
+         */
+        const postButton = document.createElement('ons-button');
+        postButton.setAttribute('modifier', 'large');
+        postButton.innerHTML = 'Post this photo';
+        postButton.onclick = function() {
+          // showLoading('loadin-modal');
+          console.log(document.querySelectorAll('.class-tags'));
+          let selectedTags = [];
+          document.querySelectorAll('.class-tags').forEach(e => {
+            selectedTags.push(JSON.parse(e.children[0].value));
+          });
+          console.log(selectedTags);
+          const caption = document.querySelector('#ct-caption').value;
+          const customTags = document.querySelector('#ct-tags').value;
+          formData = new FormData();
+          formData.append('photo', photo);
+          formData.append('caption', caption);
+          formData.append('tag', customTags);
+          selectedTags.forEach((tag, index) => {
+            formData.append(`products[${index}][products_id]`, tag.id);
+            formData.append(`products[${index}][tag]`, tag.name);
+          });
+          formData.append(
+            'processed_image_tag',
+            selectedTags.map(e => e.tag).join(',')
+          );
+          formData.append('type', type === 'real_food' ? 'NORMAL' : 'JUNK');
+
+          axios
+            .post('/api/upload/s3', formData)
+            .then(result => {
+              // hideLoading('loadin-modal');
+            })
+            .catch(err => {
+              // hideLoading('loadin-modal');
+              ons.notification.alert('Failed to submit data');
             });
 
-            const postButton = document.createElement('ons-button');
-            postButton.setAttribute('modifier', 'large');
-            postButton.innerHTML = 'Post this photo';
-            postButton.onclick = function() {
-              const caption = document.querySelector('#ct-caption').value;
-              const customTags = document.querySelector('#ct-tags').value;
-              formData.append('caption', caption);
-              formData.append('tag', customTags);
-
-              // formData.append('caption', tags);
-              console.log('POSTING PHOTO...', caption);
-            };
-            document.querySelector('#select-tags').append(postButton);
-          }
-          hideLoading('loading-modal');
-        })
-        .catch(err => {
-          hideLoading('loading-modal');
-          ons.notification.alert('Error analyzing photo');
-        });
+          console.log('POSTING PHOTO...', formData);
+        };
+        document.querySelector('#select-tags').append(postButton);
+      }
+      hideLoading('loading-modal');
+    })
+    .catch(err => {
+      hideLoading('loading-modal');
+      ons.notification.alert('Error analyzing photo');
     });
 };
 
@@ -330,6 +359,11 @@ const closeDietSettings = function() {
 const saveDietSettings = function() {
   console.log('Saving diet settings..');
 };
+
+const showDietAnalytics = function() {
+  const nav = document.getElementById('appNavigator');
+  nav.pushPage('diet-analytics.html');
+}
 
 /**
  *  Loading Modal

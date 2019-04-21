@@ -7,7 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%- include('common/css') %>
     <link rel="stylesheet" href="/assets/css/main.css">
-    <script>window.USER = <% - JSON.stringify(data); %></script>
+    <script>window.USER = <%- JSON.stringify(data); %></script>
+
+    <style>
+    .class-tags {
+        display: flex;
+        flex-direction: row;
+    }
+
+    </style>
 </head>
 
 <body>
@@ -135,9 +143,9 @@
                 </p>
                 <table id="fi-nutrients-table" cellpadding="0" cellspacing="0">
                     <thead>
-                        <th>Nutrient</th>
+                        <th style="text-align: left;">Nutrient</th>
                         <th>Unit</th>
-                        <th>Value per 100 g</th>
+                        <th style="text-align: right;">Value per 100 g</th>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -160,7 +168,7 @@
             </ons-toolbar>
 
             <input id="ct-browse-file" type="file" accept="image/*" hidden>
-            <input id="ct-camera" type="file" accept="image/*" capture="user" hidden>
+            <p id="ct-camera" type="file" accept="image/*" capture="user" hidden>
             <div class="camera">
                 <div class="caption">
                     <!-- <label>Caption</label> -->
@@ -211,27 +219,27 @@
                     <p class="">
                         <span class="fa fa-utensils"></span>&nbsp; My diet
                     </p>
-                    <button class="diet-btn">
+                    <button class="diet-btn" onclick="showDietAnalytics()">
                         Diet analytics
                     </button>
                 </div>
                 <div class="diet__info">
                     <div class="item">
                         <p class="title">
-                            Daily heavy meal
+                            Daily Meal
                         </p>
-                        <p class="info ">
+                        <p id="pp-my-diet" class="info ">
                             3 / 3
                         </p>
                     </div>
-                    <div class="item">
+                    <%# <div class="item">
                         <p class="title">
                             Daily snack meal
                         </p>
                         <p class="info ">
                             3 / 5
                         </p>
-                    </div>
+                    </div> %>
                 </div>
             </div>
 
@@ -258,11 +266,8 @@
                     <p class="diet-setting__header"><span class="fa fa-cog"></span>&nbsp; Diet setting</p>
                     <div class="diet-setting__body" style="text-align: center">
                         <p>Number of Heavy Meal</p>
+                        <p id="pp-heavy-meal-caption" style="padding: 0; margin-bottom: 0;">1000</p>
                         <ons-range id="pp-heavy-meal" style="width: 70%; margin: 20px 40px;" min="1" max="20"></ons-range>
-                        <!-- <input id="pp-heavy-meal" type="range" min="1" max="20"> -->
-                        <p>Number of Snack Meal</p>
-                        <ons-range id="pp-snack-meal" style="width: 70%; margin: 20px 40px;" min="1" max="20"></ons-range>
-                        <!-- <input id="pp-snack-meal" type="range" min="1" max="20"> -->
                     </div>
                     <div class="diet-setting__footer">
                         <ons-button onclick="closeDietSettings()">Cancel</ons-button>
@@ -270,6 +275,54 @@
                     </div>
                 </div>
             </ons-modal>
+        </ons-page>
+    </template>
+
+    <template id="diet-analytics.html">
+        <ons-page id="diet-analytics">
+
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button></ons-back-button>
+                </div>
+                <div class="center">Diet Analytics</div>
+            </ons-toolbar>
+           
+            <div class="food-trivia">
+                <p class="ingredients">
+                    <b>Summary</b>
+                    <span id="fi-ingredients"></span>
+                </p>
+                <table id="pp-nutrients-table" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <th style="text-align: left;">Nutrient</th>
+                        <th>Unit</th>
+                        <th style="text-align: right;">Value per 100 g</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <ons-modal id="food-info-modal" direction="up">
+                <div style="text-align: center">
+                    <p>
+                        <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Getting info...
+                    </p>
+                </div>
+            </ons-modal>
+
+            <script>
+                let td = window.USER.todayDiet.map(e => {
+                return `
+                    <tr>
+                    <td style="text-align: left;">${e.nutr_desc}</td>
+                    <td>${e.units}</td>
+                    <td style="text-align: right;">${e.nutr_val.toFixed(2)}</td>
+                    </tr>
+                `;
+                });
+                document.querySelector('#pp-nutrients-table tbody').innerHTML = td;
+            </script>
         </ons-page>
     </template>
 
