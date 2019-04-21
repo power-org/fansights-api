@@ -12,10 +12,12 @@ const home = require('../models/home');
 router.get('/', mw.isAuth, (req, res)=>{
     let homeData = req.session.user;
     home.getProfileDetails(req.session.user).then(data=>{
-      homeData.meals = data.meals;
+      homeData = data;
     }).catch(error=>{
       console.error('[Render][ME]', error);
       homeData.meals = [];
+      homeData.todayTotalMeals = 0;
+      homeData.todayDiet = [];
     }).finally(()=>{
       res.render('index', {data: homeData});
     })
